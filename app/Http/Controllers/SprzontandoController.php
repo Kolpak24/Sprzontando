@@ -35,3 +35,4 @@ class SprzontandoController extends Controller
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
     }
 }
+
