@@ -34,5 +34,20 @@ class SprzontandoController extends Controller
 
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
     }
+
+    public function userpanel()
+    {
+        return view('profile.userpanel', ['user' => Auth::user()]);
+    }
+
+    public function myoffers()
+    {
+        return view('profile.myoffers', ['user' => Auth::user()]);
+    }
+
+    public function myworks()
+    {
+        return view('profile.myworks', ['user' => Auth::user()]);
+    }
 }
 
