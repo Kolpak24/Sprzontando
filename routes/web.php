@@ -18,4 +18,10 @@ Route::get('/profile', [Controller::class, 'edit'])->name('profile.edit')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [SprzontandoController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [SprzontandoController::class, 'update'])->name('profile.update');
+
+    Route::get('/userpanel', [SprzontandoController::class, 'userpanel'])->name('profile.userpanel');
+
+    Route::get('/myoffers', [SprzontandoController::class, 'myoffers'])->name('profile.myoffers');
+
+    Route::get('/myworks', [SprzontandoController::class, 'myworks'])->name('profile.myworks');
 });
