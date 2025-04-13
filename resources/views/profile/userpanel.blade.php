@@ -11,7 +11,6 @@
             <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
             <a class="nav-link" href="{{ route('profile.myoffers') }}">Moje oferty</a>
             <a class="nav-link" href="{{ route('profile.myworks') }}">Moje zgłoszenia</a>
-            <a class="nav-link" href="{{ route('profile.edit') }}">Edytuj profil</a>
         </nav>
     </div>
 </div>
