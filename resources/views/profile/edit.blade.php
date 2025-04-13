@@ -2,7 +2,13 @@
 
 @section('content')
 <div class="container">
-    <h2>Edytuj profil</h2>
+    <h1 class="mb-4">Edytuj profil</h1>
+    <div class="mb-4">
+        <nav class="nav nav-pills">
+            <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
+        </nav>
+
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -27,7 +33,7 @@
 
         <div class="mb-3">
             <label for="password" class="form-label">Nowe hasło <small>(opcjonalnie)</small></label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input type="password" class="form-control" id="password" name="password" minlength="8">
         </div>
 
         <div class="mb-3">

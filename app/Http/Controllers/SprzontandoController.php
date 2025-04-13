@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Oferta;
 
 class SprzontandoController extends Controller
 {
@@ -48,6 +49,11 @@ class SprzontandoController extends Controller
     public function myworks()
     {
         return view('profile.myworks', ['user' => Auth::user()]);
+    }
+
+    public function addofert()
+    {
+        return view('profile.addofert', ['user' => Auth::user()]);
     }
 }
 

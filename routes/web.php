@@ -10,12 +10,14 @@ Route::get('/', function () {
 Auth::routes([
     'verify' => true
 ]);
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('verified')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
 
 Route::get('/profile', [Controller::class, 'edit'])->name('profile.edit')->middleware('auth');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
+
     Route::get('/profile', [SprzontandoController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [SprzontandoController::class, 'update'])->name('profile.update');
 
@@ -24,4 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/myoffers', [SprzontandoController::class, 'myoffers'])->name('profile.myoffers');
 
     Route::get('/myworks', [SprzontandoController::class, 'myworks'])->name('profile.myworks');
+
+    Route::get('/addofert', [SprzontandoController::class, 'addofert'])->name('profile.addofert');
+    
 });
