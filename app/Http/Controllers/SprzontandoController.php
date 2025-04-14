@@ -76,6 +76,7 @@ class SprzontandoController extends Controller
             'opis' => $request->opis,
             'lokalizacja' => $request->lokalizacja,
             'cena' => $request->cena,
+            'rodzaj'=>$request->auto,
         ]);
     
         return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
@@ -113,11 +114,8 @@ class SprzontandoController extends Controller
     }
 
     if ($request->has('filtr_rodzaj') && $request->input('filtr_rodzaj') !== 'wszystkie') {
-        $rodzaj = $request->input('filtr_rodzaj');
+        $query->where('rodzaj', 'like', '%' . $request->input('filtr_rodzaj') . '%');;
         // Upewnij się, że rodzaj jest liczbą
-        if (in_array($rodzaj, ['1', '2', '3', '4'])) {
-            $query->where('rodzaj_sprzatania', (int) $rodzaj); // Zamiana na int
-        }
     }
 
     if ($request->has('cena_min') && is_numeric($request->input('cena_min'))) {

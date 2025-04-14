@@ -3,12 +3,19 @@
 @section('content')
 @if(isset($oferty))
 <table class="table table-bordered table-striped table-hover w-100">
-    
+    <tr>
+        <th>Rodzaj</th>
+        <th>lokalizacja</th>
+        <th>cena</th>
+        <th>opis</th>
+    </tr>
     @foreach ($oferty as $offer)
         <tr>
-            <td>{{ $offer->id }}</td>
+            
+            <td>{{$offer->rodzaj}}</td>
             <td>{{ $offer->lokalizacja}}</td>
-           <td>Cena: {{ $offer->cena }} zł</td> 
+           <td>Cena: {{ $offer->cena }} zł</td>
+           <td>{{ $offer->opis }}</td> 
         </tr>
     @endforeach
 </table>
@@ -43,23 +50,23 @@
             </div>
             <div>
                 <label for="samochod">Mycie Samochodu</label>
-                <input type="radio" name="filtr_rodzaj" id="samochod" value="1" {{ request('filtr_rodzaj') == '1' ? 'checked' : '' }}>
+                <input type="radio" name="filtr_rodzaj" id="samochod" value="auto" {{ request('filtr_rodzaj') == 'auto' ? 'checked' : '' }}>
             </div>
             <div>
                 <label for="zamiatanie">Zamiatanie</label>
-                <input type="radio" name="filtr_rodzaj" id="zamiatanie" value="2" {{ request('filtr_rodzaj') == '2' ? 'checked' : '' }}>
+                <input type="radio" name="filtr_rodzaj" id="zamiatanie" value="zamiatanie" {{ request('filtr_rodzaj') == 'zamiatanie' ? 'checked' : '' }}>
             </div>
             <div>
                 <label for="mycie_okien">Mycie okien</label>
-                <input type="radio" name="filtr_rodzaj" id="mycie_okien" value="3" {{ request('filtr_rodzaj') == '3' ? 'checked' : '' }}>
+                <input type="radio" name="filtr_rodzaj" id="mycie_okien" value="okna" {{ request('filtr_rodzaj') == 'okna' ? 'checked' : '' }}>
             </div>
             <div>
                 <label for="lazienki">Mycie Łazienki</label>
-                <input type="radio" name="filtr_rodzaj" id="lazienki" value="4" {{ request('filtr_rodzaj') == '4' ? 'checked' : '' }}>
+                <input type="radio" name="filtr_rodzaj" id="lazienki" value="lazienka" {{ request('filtr_rodzaj') == 'lazienka' ? 'checked' : '' }}>
             </div>
             <div>
                 <label for="lazienki">Mycie Zębów</label>
-                <input type="radio" name="filtr_rodzaj" id="zeby" value="5" {{ request('filtr_rodzaj') == '5' ? 'checked' : '' }}>
+                <input type="radio" name="filtr_rodzaj" id="zeby" value="zeby" {{ request('filtr_rodzaj') == 'zeby' ? 'checked' : '' }}>
             </div>
         </div>
     
