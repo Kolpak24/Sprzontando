@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Oferty;
 
 class SprzontandoController extends Controller
 {
@@ -54,6 +55,32 @@ class SprzontandoController extends Controller
     {
         return view('profile.addofert', ['user' => Auth::user()]);
     }
+
+    public function createOferta()
+    {
+        return view('profile.addofert');
+    }
+    
+    public function storeOferta(Request $request)
+    {
+        $request->validate([
+            'tytul' => 'required|string|max:255',
+            'opis' => 'required|string',
+            'lokalizacja' => 'required|string|max:255',
+            'cena' => 'required|numeric|min:0',
+        ]);
+    
+        Oferty::create([
+            'user_id' => auth()->id(),
+            'tytul' => $request->tytul,
+            'opis' => $request->opis,
+            'lokalizacja' => $request->lokalizacja,
+            'cena' => $request->cena,
+        ]);
+    
+        return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
+    }
+
     
 }
 
