@@ -76,11 +76,59 @@ class SprzontandoController extends Controller
             'opis' => $request->opis,
             'lokalizacja' => $request->lokalizacja,
             'cena' => $request->cena,
+            'rodzaj'=>$request->auto,
         ]);
     
         return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
     }
 
-    
-}
+    public function index()
+    {
+        $oferty = Oferty::all();
+        return view('home', compact('oferty'));
+    }
+    public function filtry(Request $request)
+    {
+        $query = Oferty::query();
+    if ($request->has('sortuj')) {
+        $sort = $request->input('sortuj');
+
+        switch ($sort) {
+            case 'data-dsc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'data-asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'cena-dsc':
+                $query->orderBy('cena', 'desc');
+                break;
+            case 'cena-asc':
+                $query->orderBy('cena', 'asc');
+                break;
+        }
+        
+    }
+    if ($request->has('miejscowosc') && $request->input('miejscowosc') !== '') {
+        $query->where('lokalizacja', 'like', '%' . $request->input('miejscowosc') . '%');
+    }
+
+    if ($request->has('filtr_rodzaj') && $request->input('filtr_rodzaj') !== 'wszystkie') {
+        $query->where('rodzaj', 'like', '%' . $request->input('filtr_rodzaj') . '%');;
+        // Upewnij się, że rodzaj jest liczbą
+    }
+
+    if ($request->has('cena_min') && is_numeric($request->input('cena_min'))) {
+        $query->where('cena', '>=', (float) $request->input('cena_min')); // Zamiana na float
+    }
+
+    if ($request->has('cena_max') && is_numeric($request->input('cena_max'))) {
+        $query->where('cena', '<=', (float) $request->input('cena_max')); // Zamiana na float
+    }
+    $oferty = $query->get();
+
+    return view('home', compact('oferty'));
+}}
+
+
 

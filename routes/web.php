@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SprzontandoController;
+use App\Models\Oferty;
 
 Route::get('/', function () {
-    return view('home');
+    $oferty = Oferty::all();
+    return view('home', compact('oferty'));
 });
 
 Auth::routes([
@@ -32,3 +34,5 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/addofert', [SprzontandoController::class, 'createOferta'])->name('profile.addofert');
     Route::post('/addofert', [SprzontandoController::class, 'storeOferta'])->name('oferty.store');
 });
+Route::get('/home', [SprzontandoController::class, 'index']);
+Route::get('/home', [SprzontandoController::class, 'filtry']);
