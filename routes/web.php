@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SprzontandoController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::redirect('/', '/home');
+//Route::get('/', function () {
+//    return view('home');
+//});
 
 Auth::routes([
     'verify' => true
