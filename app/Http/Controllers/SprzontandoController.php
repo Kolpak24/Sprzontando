@@ -84,6 +84,7 @@ class SprzontandoController extends Controller
 
     public function index()
     {
+        $oferty = Oferty::all();
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
         return view('home', compact('oferty'));
     }
