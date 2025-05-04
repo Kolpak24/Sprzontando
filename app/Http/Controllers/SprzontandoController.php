@@ -84,8 +84,9 @@ class SprzontandoController extends Controller
 
     public function index()
     {
-        $oferty = Oferty::all();
+      
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
+
         return view('home', compact('oferty'));
     }
     public function filtry(Request $request)
@@ -109,8 +110,10 @@ class SprzontandoController extends Controller
                 break;
         }
         
+
     } else {
         $query->orderBy('created_at', 'desc');
+
     }
     if ($request->has('miejscowosc') && $request->input('miejscowosc') !== '') {
         $query->where('lokalizacja', 'like', '%' . $request->input('miejscowosc') . '%');
