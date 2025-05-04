@@ -43,7 +43,8 @@ class SprzontandoController extends Controller
 
     public function myoffers()
     {
-        return view('profile.myoffers', ['user' => Auth::user()]);
+        $oferty = Oferty::where('user_id', Auth::id())->get();
+        return view('profile.myoffers', compact('oferty'));
     }
 
     public function myworks()
@@ -84,7 +85,6 @@ class SprzontandoController extends Controller
 
     public function index()
     {
-        $oferty = Oferty::all();
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
         return view('home', compact('oferty'));
     }
@@ -131,6 +131,7 @@ class SprzontandoController extends Controller
     $oferty = $query->get();
 
     return view('home', compact('oferty'));
+    
 }}
 
 
