@@ -37,5 +37,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::delete('/oferty/{id}', [SprzontandoController::class, 'destroyOferta'])->name('oferty.destroy');
 
 });
+
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);

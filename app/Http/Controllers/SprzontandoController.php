@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
+use App\Models\Report;
 
 class SprzontandoController extends Controller
 {
@@ -36,6 +37,32 @@ class SprzontandoController extends Controller
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
     }
 
+    public function adminpanel()
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403); // dostęp tylko dla admina
+        }
+
+        return view('profile.adminpanel');
+    }
+
+    public function storeReport(Request $request)
+    {
+        $request->validate([
+            'oferta_id' => 'required|exists:oferty,id',
+            'powody' => 'nullable|array',
+            'opis' => 'nullable|string'
+        ]);
+
+        Report::create([
+            'oferta_id' => $request->oferta_id,
+           'powody' => implode(', ', $request->powody ?? []),
+            'opis' => $request->opis
+        ]);
+
+        return back()->with('success', 'Zgłoszenie zostało wysłane.');
+    }
+
     public function userpanel()
     {
         return view('profile.userpanel', ['user' => Auth::user()]);
@@ -43,8 +70,7 @@ class SprzontandoController extends Controller
 
     public function myoffers()
     {
-        $oferty = Oferty::where('user_id', Auth::id())->get();
-        return view('profile.myoffers', compact('oferty'));
+        return view('profile.myoffers', ['user' => Auth::user()]);
     }
 
     public function myworks()
@@ -84,8 +110,9 @@ class SprzontandoController extends Controller
     }
 
     public function index()
-    {
+    { 
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
+
         return view('home', compact('oferty'));
     }
     public function filtry(Request $request)
@@ -109,8 +136,10 @@ class SprzontandoController extends Controller
                 break;
         }
         
+
     } else {
         $query->orderBy('created_at', 'desc');
+
     }
     if ($request->has('miejscowosc') && $request->input('miejscowosc') !== '') {
         $query->where('lokalizacja', 'like', '%' . $request->input('miejscowosc') . '%');
@@ -131,7 +160,6 @@ class SprzontandoController extends Controller
     $oferty = $query->get();
 
     return view('home', compact('oferty'));
-    
 }}
 
 
