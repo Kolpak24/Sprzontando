@@ -5,17 +5,55 @@
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
         <th>Rodzaj</th>
-        <th>lokalizacja</th>
-        <th>cena</th>
-        <th>opis</th>
+        <th>Lokalizacja</th>
+        <th>Cena</th>
+        <th>Opis</th>
+        <th>Akcje</th> {{-- NOWA kolumna --}}
     </tr>
     @foreach ($oferty as $offer)
         <tr>
-            
-            <td>{{$offer->rodzaj}}</td>
-            <td>{{ $offer->lokalizacja}}</td>
-           <td>Cena: {{ $offer->cena }} zł</td>
-           <td>{{ $offer->opis }}</td> 
+            <td>{{ $offer->rodzaj }}</td>
+            <td>{{ $offer->lokalizacja }}</td>
+            <td>Cena: {{ $offer->cena }} zł</td>
+            <td>{{ $offer->opis }}</td>
+            <td>
+                <!-- Przycisk do otwierania modala -->
+                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
+                    Report
+                </button>
+
+                <!-- Modal zgłoszenia -->
+                <div class="modal fade" id="reportModal{{ $offer->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $offer->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="POST" action="{{ route('report.store') }}">
+                            @csrf
+                            <input type="hidden" name="oferta_id" value="{{ $offer->id }}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel{{ $offer->id }}">Zgłoś ofertę</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-2">
+                                        <label><strong>Powody zgłoszenia:</strong></label><br>
+                                        <div><input type="checkbox" name="powody[]" value="Fałszywa oferta"> Fałszywa oferta</div>
+                                        <div><input type="checkbox" name="powody[]" value="Nieodpowiedni język"> Nieodpowiedni język</div>
+                                        <div><input type="checkbox" name="powody[]" value="Oszustwo"> Oszustwo</div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="opis">Dodatkowe informacje</label>
+                                        <textarea name="opis" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Wyślij zgłoszenie</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </td>
         </tr>
     @endforeach
 </table>

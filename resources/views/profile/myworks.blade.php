@@ -8,7 +8,7 @@
     <div class="mb-4">
         <nav class="nav nav-pills">
             <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
-            <a class="nav-link" href="{{ url('/home') }}">Znajdź ogłoszenie</a>
+            <a class="nav-link" href="{{ route('home') }}">Znajdz zgłoszenie</a>
         </nav>
 
     </div>
