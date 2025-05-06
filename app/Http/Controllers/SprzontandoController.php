@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
+use App\Models\Report;
 
 class SprzontandoController extends Controller
 {
@@ -34,6 +35,32 @@ class SprzontandoController extends Controller
         $user->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
+    }
+
+    public function adminpanel()
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403); // dostęp tylko dla admina
+        }
+
+        return view('profile.adminpanel');
+    }
+
+    public function storeReport(Request $request)
+    {
+        $request->validate([
+            'oferta_id' => 'required|exists:oferty,id',
+            'powody' => 'nullable|array',
+            'opis' => 'nullable|string'
+        ]);
+
+        Report::create([
+            'oferta_id' => $request->oferta_id,
+           'powody' => implode(', ', $request->powody ?? []),
+            'opis' => $request->opis
+        ]);
+
+        return back()->with('success', 'Zgłoszenie zostało wysłane.');
     }
 
     public function userpanel()
@@ -83,8 +110,7 @@ class SprzontandoController extends Controller
     }
 
     public function index()
-    {
-      
+    { 
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
 
         return view('home', compact('oferty'));
