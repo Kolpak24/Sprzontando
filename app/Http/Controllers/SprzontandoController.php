@@ -43,7 +43,11 @@ class SprzontandoController extends Controller
             abort(403); // dostęp tylko dla admina
         }
 
-        return view('profile.adminpanel');
+        // return view('profile.adminpanel');
+
+        $reports = Report::with('oferta')->oldest()->get();
+
+        return view('profile.adminpanel', compact('reports'));
     }
 
     public function storeReport(Request $request)
@@ -54,14 +58,18 @@ class SprzontandoController extends Controller
             'opis' => 'nullable|string'
         ]);
 
-        Report::create([
-            'oferta_id' => $request->oferta_id,
-           'powody' => implode(', ', $request->powody ?? []),
-            'opis' => $request->opis
-        ]);
+        $oferta = Oferty::find($request->oferta_id);
 
-        return back()->with('success', 'Zgłoszenie zostało wysłane.');
-    }
+        Report::create([
+        'oferta_id' => $request->oferta_id,
+        'zglaszajacy_id' => Auth::id(),  // ID aktualnie zalogowanego użytkownika (zgłaszający)
+        'zglaszany_id' => $oferta->user_id,  // ID właściciela oferty (zgłaszany)
+        'powody' => implode(', ', $request->powody ?? []),
+        'opis' => $request->opis
+    ]);
+
+    return back()->with('success', 'Zgłoszenie zostało wysłane.');
+}
 
     public function userpanel()
     {
@@ -115,6 +123,7 @@ class SprzontandoController extends Controller
 
         return view('home', compact('oferty'));
     }
+
     public function filtry(Request $request)
     {
         $query = Oferty::query();
