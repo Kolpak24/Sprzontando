@@ -36,8 +36,8 @@
                                 <div class="modal-body">
                                     <div class="mb-2">
                                         <label><strong>Powody zgłoszenia:</strong></label><br>
-                                        <div><input type="checkbox" name="powody[]" value="Fałszywa oferta"> Fałszywa oferta</div>
-                                        <div><input type="checkbox" name="powody[]" value="Nieodpowiedni język"> Nieodpowiedni język</div>
+                                        <div><input type="checkbox" name="powody[]" value="Za duzo $"> Pojebalo kogos ostro z cena</div>
+                                        <div><input type="checkbox" name="powody[]" value="Wytyczne"> Narusza wytyczne</div>
                                         <div><input type="checkbox" name="powody[]" value="Oszustwo"> Oszustwo</div>
                                     </div>
                                     <div class="mb-2">

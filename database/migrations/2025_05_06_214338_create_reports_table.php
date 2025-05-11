@@ -10,15 +10,21 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-    {
-        Schema::create('reports', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('oferta_id')->constrained('oferty')->onDelete('cascade');
-            $table->string('powody')->nullable();
-            $table->text('opis')->nullable();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('reports', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('oferta_id');
+        $table->unsignedBigInteger('zglaszajacy_id'); // kto zgłasza
+        $table->unsignedBigInteger('zglaszany_id');   // właściciel oferty
+        $table->text('powody')->nullable();
+        $table->text('opis')->nullable();
+        $table->timestamps();
+
+        $table->foreign('oferta_id')->references('id')->on('oferty')->onDelete('cascade');
+        $table->foreign('zglaszajacy_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('zglaszany_id')->references('id')->on('users')->onDelete('cascade');
+    });
+}
 
     /**
      * Reverse the migrations.
