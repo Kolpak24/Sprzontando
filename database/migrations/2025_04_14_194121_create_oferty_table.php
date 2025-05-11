@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('cena', 10, 2);
             $table->timestamps();
             $table->string('rodzaj');
+            $table->string('status')->default('pending');
 
             // relacja z tabelą users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -31,6 +32,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('oferty');
+        Schema::table('oferty', function (Blueprint $table) {
+            $table->dropColumn('status');
+    });
     }
 };
