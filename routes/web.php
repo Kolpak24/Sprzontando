@@ -35,6 +35,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/report', [SprzontandoController::class, 'storeReport'])->name('report.store');
 
     Route::get('/adminpanel', [SprzontandoController::class, 'adminpanel'])->name('adminpanel');
+
+    Route::put('/adminpanel/ban/{id}', [SprzontandoController::class, 'banOferta'])->name('admin.banOferta');
+    Route::put('/adminpanel/approve/{id}', [SprzontandoController::class, 'approveOferta'])->name('admin.approveOferta');
 });
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
