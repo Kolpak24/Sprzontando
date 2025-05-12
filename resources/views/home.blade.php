@@ -11,6 +11,10 @@
         <th>Akcje</th> {{-- NOWA kolumna --}}
     </tr>
     @foreach ($oferty as $offer)
+        <div    class="your-div-class"
+    data-bs-toggle="modal" 
+    data-bs-target="#ofertaModal"
+    style="cursor: pointer;">
         <tr>
             <td>{{ $offer->rodzaj }}</td>
             <td>{{ $offer->lokalizacja }}</td>
@@ -54,7 +58,11 @@
                     </div>
                 </div>
             </td>
+
+        </tr></div>
+
         </tr>
+
     @endforeach
 </table>
 @else

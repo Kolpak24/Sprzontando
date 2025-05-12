@@ -37,6 +37,8 @@ class SprzontandoController extends Controller
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
     }
 
+
+
     public function banOferta($id)
     {
         $oferta = Oferty::findOrFail($id);
@@ -54,6 +56,7 @@ class SprzontandoController extends Controller
 
         return redirect()->route('adminpanel')->with('success', 'Oferta została zatwierdzona!');
     }
+
 
     public function adminpanel()
     {
@@ -121,25 +124,69 @@ class SprzontandoController extends Controller
             'opis' => 'required|string',
             'lokalizacja' => 'required|string|max:255',
             'cena' => 'required|numeric|min:0',
+            'rodzaj' => 'array',
+            'rodzaj.*' => 'string|max:50',
+
         ]);
-    
+        $rodzaj = isset($request->rodzaj) ? implode(', ', $request->rodzaj) : null;
         Oferty::create([
             'user_id' => auth()->id(),
             'tytul' => $request->tytul,
             'opis' => $request->opis,
             'lokalizacja' => $request->lokalizacja,
             'cena' => $request->cena,
-            'rodzaj'=>$request->auto,
+            'rodzaj'=>$rodzaj,
         ]);
     
         return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
     }
+public function destroy($id)
+{
+    $oferta = Oferty::findOrFail($id);
 
+    // Opcjonalne sprawdzenie uprawnień
+    if ($oferta->user_id !== auth()->id()) {
+        abort(403, 'Nie masz uprawnień do usunięcia tej oferty.');
+    }
+
+    $oferta->delete();
+
+    return redirect()->back()->with('success', 'Oferta została usunięta.');
+}
     public function index()
     { 
         $oferty = Oferty::orderBy('created_at', 'desc')->get();
 
         return view('home', compact('oferty'));
+
+    }
+    
+    public function myoffer()
+    {
+        $myoffer = Oferty::where('user_id', Auth::id())->get();
+    return view('profile.myoffers', compact('myoffer'));
+    }
+     public function updateoferty(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:oferty,id',
+            'rodzaj' => 'array',
+            'rodzaj.*' => 'string|max:50',
+            'opis' => 'nullable|string',
+            'lokalizacja' => 'required|string|max:255',
+            'cena' => 'required|numeric|min:0',
+        ]);
+
+        $oferty = Oferty::find($validated['id']);
+
+        // Przykład: zapis kategorii jako string (oddzielonych przecinkami)
+        $oferty->rodzaj = implode(',', $validated['rodzaj'] ?? []);
+        $oferty->opis = $validated['opis'];
+        $oferty->lokalizacja = $validated['lokalizacja'];
+        $oferty->cena = $validated['cena'];
+        $oferty->save();
+
+        return redirect()->back()->with('success', 'Oferta została zaktualizowana.');
     }
 
     public function filtry(Request $request)
