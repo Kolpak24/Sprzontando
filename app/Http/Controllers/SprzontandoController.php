@@ -37,6 +37,27 @@ class SprzontandoController extends Controller
         return redirect()->route('profile.edit')->with('success', 'Profil zaktualizowany!');
     }
 
+
+
+    public function banOferta($id)
+    {
+        $oferta = Oferty::findOrFail($id);
+        $oferta->status = 'banned'; // Zmieniamy status oferty na "banned"
+        $oferta->save();
+
+        return redirect()->route('adminpanel')->with('success', 'Oferta została zbanowana!');
+    }
+
+    public function approveOferta($id)
+    {
+        $oferta = Oferty::findOrFail($id);
+        $oferta->status = 'approved'; // Zmieniamy status oferty na "approved"
+        $oferta->save();
+
+        return redirect()->route('adminpanel')->with('success', 'Oferta została zatwierdzona!');
+    }
+
+
     public function adminpanel()
     {
         if (Auth::user()->role !== 'admin') {
