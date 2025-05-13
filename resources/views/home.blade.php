@@ -62,6 +62,7 @@
                     </div>
                 </div>
             </td>
+
         </tr>
          <div class="modal fade" id="ofertaModal{{ $offer->id }}" tabindex="-1" aria-labelledby="ofertaModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -88,6 +89,13 @@
                 </div>
             </div>
             </div>
+
+
+        </tr></div>
+
+        </tr>
+
+
     @endforeach
 </table>
 @else
