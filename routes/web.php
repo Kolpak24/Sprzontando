@@ -46,7 +46,6 @@ Route::get('/home', [SprzontandoController::class, 'filtry']);
 
     Route::put('/adminpanel/ban/{id}', [SprzontandoController::class, 'banOferta'])->name('admin.banOferta');
     Route::put('/adminpanel/approve/{id}', [SprzontandoController::class, 'approveOferta'])->name('admin.approveOferta');
-});
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);

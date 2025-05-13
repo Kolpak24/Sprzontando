@@ -34,11 +34,6 @@ return new class extends Migration
      * Reverse the migrations.
      */
 
-    public function down(): void
-    {
-        Schema::dropIfExists('reports');
-    }
-
     public function down()
 {
     Schema::table('reports', function (Blueprint $table) {
