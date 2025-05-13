@@ -26,19 +26,19 @@
         </div>
         <div class="mb-3">
             <label for="check" class="form-label">Mycie auta</label>
-            <input type="checkbox" name="auto" id="check" class="sm" value="auto" ><br>
+            <input type="checkbox" name="rodzaj[]" id="check" class="sm" value="auto" ><br>
 
             <label for="check2" class="form-label">zamiatanie</label>
-            <input type="checkbox" name="auto" id="check2" class="sm" value="zamiatanie" ><br>
+            <input type="checkbox" name="rodzaj[]" id="check2" class="sm" value="zamiatanie" ><br>
             <label for="check3" class="form-label">Mycie okien</label>
-            <input type="checkbox" name="auto" id="check3" class="sm" value="okna" ><br>
+            <input type="checkbox" name="rodzaj[]" id="check3" class="sm" value="okna" ><br>
 
             <label for="check4" class="form-label">Mycie łazienki</label>
-            <input type="checkbox" name="auto" id="check4" class="sm" value="lazienka" ><br>
+            <input type="checkbox" name="rodzaj[]" id="check4" class="sm" value="lazienka" ><br>
 
 
             <label for="check5" class="form-label">Mycie zębów</label>
-            <input type="checkbox" name="auto" id="check5" class="sm" value="zeby" ><br>
+            <input type="checkbox" name="rodzaj[]" id="check5" class="sm" value="zeby" ><br>
         </div>
 
         <div class="mb-3">
