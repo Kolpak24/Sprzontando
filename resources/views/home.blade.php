@@ -1,23 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
+
 @if(isset($oferty))
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
-        <th>tytul</th>
+        <th>Obraz</th>
+        <th>Tytul</th>
         <th>Rodzaj</th>
         <th>Lokalizacja</th>
-        <th>Cena</th>
+        <th>Wynagrodzenie</th>
         <th>Opis</th>
         <th>Akcje</th>
     </tr>
     @foreach ($oferty as $offer)
 
         <tr data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}" style="cursor: pointer;">
+            <td>{{ $offer->obraz}}</td>
             <td>{{ $offer->tytul }}</td>
             <td>{{ $offer->rodzaj }}</td>
             <td>{{ $offer->lokalizacja }}</td>
-            <td>Cena: {{ $offer->cena }} zł</td>
+            <td>Zapłata: {{ $offer->cena}} zł</td>
             <td><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
             <td>
                 <!-- Przycisk do otwierania modala -->
@@ -95,6 +98,14 @@
 
         </tr>
 
+
+    @endforeach
+</table>
+@else
+    <p>brak ofert</p>
+@endif
+@endsection
+@section('filtry')
 
     @endforeach
 </table>
