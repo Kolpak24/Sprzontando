@@ -2,10 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h1>Dodaj nową ofertę</h1>
+    <h1 class="mb-4">Dodaj nową ofertę</h1>
 
-<<<<<<< Updated upstream
-=======
+
     {{-- Wyświetlenie błędów walidacji --}}
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -33,12 +32,13 @@
 
             <label for="check2" class="form-label">zamiatanie</label>
             <input type="checkbox" name="rodzaj[]" id="check2" class="sm" value="zamiatanie" ><br>
-            
+
             <label for="check3" class="form-label">Mycie okien</label>
             <input type="checkbox" name="rodzaj[]" id="check3" class="sm" value="okna" ><br>
 
             <label for="check4" class="form-label">Mycie łazienki</label>
             <input type="checkbox" name="rodzaj[]" id="check4" class="sm" value="lazienka" ><br>
+
 
             <label for="check5" class="form-label">Mycie zębów</label>
             <input type="checkbox" name="rodzaj[]" id="check5" class="sm" value="zeby" ><br>
@@ -61,6 +61,6 @@
 
         <button type="submit" class="btn btn-success">Dodaj ofertę</button>
     </form>
->>>>>>> Stashed changes
+
 </div>
 @endsection
