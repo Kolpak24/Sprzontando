@@ -107,14 +107,6 @@
 @endsection
 @section('filtry')
 
-    @endforeach
-</table>
-@else
-    <p>brak ofert</p>
-@endif
-@endsection
-@section('filtry')
-
 <div class="container">
     <!-- Dropdown z filtrami -->
     <div class="dropdown">
