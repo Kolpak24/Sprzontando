@@ -20,9 +20,11 @@ return new class extends Migration
             $table->decimal('cena', 10, 2);
             $table->timestamps();
 
+
             $table->string('rodzaj')->nullable();
             $table->string('status')->default('pending');
             $table->string('obraz')->nullable();
+
 
 
             // relacja z tabelą users

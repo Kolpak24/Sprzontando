@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
 use App\Models\Report;
-
+use App\Models\User;
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -234,7 +234,19 @@ public function destroy($id)
     $oferty = $query->get();
 
     return view('home', compact('oferty'));
-}}
+}
+
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
+}
+public function show($id)
+{
+    $offer = Oferty::with('user')->findOrFail($id);
+    return view('oferr', compact('offer'));
+    
+}
+}
 
 
 

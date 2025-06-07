@@ -5,8 +5,10 @@
 @if(isset($oferty))
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
+
         <th>Obraz</th>
         <th>Tytul</th>
+
         <th>Rodzaj</th>
         <th>Lokalizacja</th>
         <th>Wynagrodzenie</th>
@@ -15,19 +17,26 @@
     </tr>
     @foreach ($oferty as $offer)
 
-        <tr data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}" style="cursor: pointer;">
-            <td>{{ $offer->obraz}}</td>
-            <td>{{ $offer->tytul }}</td>
-            <td>{{ $offer->rodzaj }}</td>
-            <td>{{ $offer->lokalizacja }}</td>
-            <td>Zapłata: {{ $offer->cena}} zł</td>
-            <td><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
+
+          
+        <tr>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->obraz}}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->tytul }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->rodzaj }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->lokalizacja }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zapłata: {{ $offer->cena}} zł</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;"><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
+           
+
+
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
                     Report
                 </button>
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}">
+
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+
                     Zgłoś się!
                 </button>
 
@@ -66,37 +75,15 @@
                 </div>
             </td>
 
-        </tr>
-         <div class="modal fade" id="ofertaModal{{ $offer->id }}" tabindex="-1" aria-labelledby="ofertaModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ofertaModalLabel">{{$offer->tytul}}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
-                        </div>
-                <div class="modal-body">
-                    <div class="">
 
-                    </div>
-                    <p id="modalOpis">{{$offer->opis}}</p>
-                </div>
-                <div class="modal-footer">
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
-                    Report
-                </button>
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}">
-                    Zgłoś się!
-                </button>
-                
-                </div>
-                </div>
-            </div>
-            </div>
+        </tr> 
+         
+            
 
+       
 
-        </tr></div>
+        
 
-        </tr>
 
 
     @endforeach

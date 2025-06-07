@@ -18,6 +18,7 @@ class Oferty extends Model
         'lokalizacja',
         'cena',
         'rodzaj',
+        'obraz',
     ];
 
     public function user()
