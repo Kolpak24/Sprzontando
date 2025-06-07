@@ -27,6 +27,7 @@
                                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}">
                     Zgłoś się!
                 </button>
+                
 
                
 
@@ -78,8 +79,8 @@
                     <p id="modalOpis">{{$offer->opis}}</p>
                 </div>
                 <div class="modal-footer">
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
-                    Report
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">Report
+                    
                 </button>
                                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#ofertaModal{{ $offer->id }}">
                     Zgłoś się!
