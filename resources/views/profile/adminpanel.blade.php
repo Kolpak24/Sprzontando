@@ -53,6 +53,7 @@
 @endif
 @endsection
 
+
     <table class="table table-bordered table-striped table-hover w-100">
         <thead>
             <tr>
@@ -98,5 +99,6 @@
     <p>Brak zgłoszeń</p>
 @endif
 @endsection
+
 
 
