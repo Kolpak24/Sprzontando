@@ -2,6 +2,7 @@
 
 @section('content')
 @if(isset($reports))
+
 {{-- <div class="container">
     <h1 class="mb-4">Admin Panel</h1>
     <div class="mb-4">
@@ -9,6 +10,8 @@
             <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
         </nav> 
 </div>--}}
+
+
 
 <div class="container">
     <div class="alert alert-success">
@@ -18,6 +21,7 @@
 
     <h1>Panel administratora</h1>
     <p>Tu będą wyświetlane zgłoszone oferty.</p>
+
 
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>

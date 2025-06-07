@@ -20,6 +20,10 @@ return new class extends Migration
         $table->text('opis')->nullable();
         $table->timestamps();
 
+
+        $table->text('status')->default('pending'); // pending, accepted, rejected
+
+
         $table->foreign('oferta_id')->references('id')->on('oferty')->onDelete('cascade');
         $table->foreign('zglaszajacy_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('zglaszany_id')->references('id')->on('users')->onDelete('cascade');
@@ -29,8 +33,12 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('reports');
-    }
+
+    public function down()
+{
+    Schema::table('reports', function (Blueprint $table) {
+        $table->dropColumn('status');
+    });
+}
+
 };

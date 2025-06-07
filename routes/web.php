@@ -36,8 +36,17 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/report', [SprzontandoController::class, 'storeReport'])->name('report.store');
 
     Route::get('/adminpanel', [SprzontandoController::class, 'adminpanel'])->name('adminpanel');
+
     Route::get('/myoffers/{id}', [SprzontandoController::class, 'destroy'])->name('profile.deleteoffers');
+    Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
 });
+
+//Route::get('/home', [SprzontandoController::class, 'index']);
+Route::get('/home', [SprzontandoController::class, 'filtry']);
+
+
+    Route::put('/adminpanel/ban/{id}', [SprzontandoController::class, 'banOferta'])->name('admin.banOferta');
+    Route::put('/adminpanel/approve/{id}', [SprzontandoController::class, 'approveOferta'])->name('admin.approveOferta');
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);

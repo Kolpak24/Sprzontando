@@ -18,6 +18,7 @@
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>
+                <th>tytul</th>
                 <th>Rodzaj</th>
                 <th>Lokalizacja</th>
                 <th>Cena</th>
@@ -27,10 +28,11 @@
              @foreach ($myoffer as $moffer)
             
         <tr>
+            <td>{{$moffer->tytul}}</td>
             <td>{{ $moffer->rodzaj }}</td>
             <td>{{ $moffer->lokalizacja }}</td>
             <td>Cena: {{ $moffer->cena }} zł</td>
-            <td>{{ $moffer->opis }}</td>
+            <td>{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
