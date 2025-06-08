@@ -17,22 +17,31 @@
 
           
         <tr>
-            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->obraz}}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+                @if($offer->obraz)
+                    <img src="{{ asset('storage/' . $offer->obraz) }}" alt="Zdjęcie oferty" style="max-width: 100px; max-height: 70px; object-fit: cover;">
+                @else
+                    <img src="https://via.placeholder.com/100x70?text=Brak+zdjęcia" alt="Brak zdjęcia">
+            @endif
+            </td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->tytul }}</td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->rodzaj }}</td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->lokalizacja }}</td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zapłata: {{ $offer->cena}} zł</td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;"><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
-           
             <td>
-                <!-- Przycisk do otwierania modala -->
-                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
-                    Report
-                </button>
-                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
 
-                    Zgłoś się!
-                </button>
+                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zgłoś się!</button>
+
+                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">Report</button>
+
+                @if(Auth::user()->role === 'admin')
+                    <form action="{{ route('profile.deleteoffers', $offer->id) }}" method="get" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
+                        @csrf
+                            @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                    </form>
+                            @endif
 
 
                

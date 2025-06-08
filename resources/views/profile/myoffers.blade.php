@@ -18,7 +18,8 @@
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>
-                <th>tytul</th>
+                <th>Obraz</th>
+                <th>Tytul</th>
                 <th>Rodzaj</th>
                 <th>Lokalizacja</th>
                 <th>Cena</th>
@@ -28,6 +29,13 @@
              @foreach ($myoffer as $moffer)
             
         <tr>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">
+                @if($moffer->obraz)
+                    <img src="{{ asset('storage/' . $moffer->obraz) }}" alt="Zdjęcie oferty" style="max-width: 100px; max-height: 70px; object-fit: cover;">
+                @else
+                    <img src="https://via.placeholder.com/100x70?text=Brak+zdjęcia" alt="Brak zdjęcia">
+            @endif
+            </td>
             <td>{{$moffer->tytul}}</td>
             <td>{{ $moffer->rodzaj }}</td>
             <td>{{ $moffer->lokalizacja }}</td>

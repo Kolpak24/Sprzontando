@@ -118,28 +118,37 @@ class SprzontandoController extends Controller
     }
     
     public function storeOferta(Request $request)
-    {
-        $request->validate([
-            'tytul' => 'required|string|max:255',
-            'opis' => 'required|string',
-            'lokalizacja' => 'required|string|max:255',
-            'cena' => 'required|numeric|min:0',
-            'rodzaj' => 'array',
-            'rodzaj.*' => 'string|max:50',
+{
+    $request->validate([
+        'tytul' => 'required|string|max:255',
+        'opis' => 'required|string',
+        'lokalizacja' => 'required|string|max:255',
+        'cena' => 'required|numeric|min:0',
+        'rodzaj' => 'array',
+        'rodzaj.*' => 'string|max:50',
+        'obraz' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+    ]);
 
-        ]);
-        $rodzaj = isset($request->rodzaj) ? implode(', ', $request->rodzaj) : null;
-        Oferty::create([
-            'user_id' => auth()->id(),
-            'tytul' => $request->tytul,
-            'opis' => $request->opis,
-            'lokalizacja' => $request->lokalizacja,
-            'cena' => $request->cena,
-            'rodzaj'=>$rodzaj,
-        ]);
-    
-        return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
+    $rodzaj = isset($request->rodzaj) ? implode(', ', $request->rodzaj) : null;
+
+    $imagePath = null;
+    if ($request->hasFile('obraz')) {
+        $imagePath = $request->file('obraz')->store('zdjecia', 'public');
     }
+
+    Oferty::create([
+        'user_id' => auth()->id(),
+        'tytul' => $request->tytul,
+        'opis' => $request->opis,
+        'lokalizacja' => $request->lokalizacja,
+        'cena' => $request->cena,
+        'rodzaj' => $rodzaj,
+        'obraz' => $imagePath, // tu zapisujemy ścieżkę do zdjęcia
+    ]);
+
+    return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
+}
+
 public function destroy($id)
 {
     $oferta = Oferty::findOrFail($id);
