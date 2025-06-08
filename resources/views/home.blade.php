@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+.fixed-img {
+  width: 100%;        /* szerokość karty */
+  max-height: 200px;  /* maksymalna wysokość */
+  object-fit: contain; /* dopasuj całe zdjęcie, nie przycinaj */
+  object-position: center center;
+  display: block;
+  background-color: #eee; /* na wypadek pustych przestrzeni */
+}
+</style>
+
 @if(isset($oferty) && $oferty->count())
 <div class="container my-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -8,7 +20,7 @@
         <div class="col">
             <div class="card h-100" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
                 @if($offer->obraz)
-                    <img src="{{ asset('storage/' . $offer->obraz) }}" class="card-img-top" alt="Zdjęcie oferty" style="height: 200px; object-fit: cover;">
+                    <img src="{{ asset('storage/' . $offer->obraz) }}" class="card-img-top fixed-img" alt="Zdjęcie oferty">
                 @else
                     <img src="https://via.placeholder.com/300x200?text=Brak+zdjęcia" class="card-img-top" alt="Brak zdjęcia">
                 @endif
