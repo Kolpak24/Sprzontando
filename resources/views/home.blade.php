@@ -30,15 +30,10 @@
                     Report
                 </button>
                                 <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
-                    Zgłoś się!
-                </button>
-
-               
-
-                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
 
                     Zgłoś się!
                 </button>
+
 
                
 
