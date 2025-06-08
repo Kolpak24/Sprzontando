@@ -45,8 +45,10 @@ Route::middleware('auth', 'verified')->group(function () {
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
 
+
 Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
 Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
+
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);

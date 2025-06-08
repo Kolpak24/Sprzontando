@@ -246,6 +246,7 @@ public function show($id)
     return view('oferr', compact('offer'));
     
 }
+
 public function cancelReport($id)
 {
     $report = Report::findOrFail($id);
@@ -265,8 +266,8 @@ public function banUser($userId)
     Oferty::where('user_id', $userId)->delete();
 
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
-}
-}
+}}
+
 
 
 

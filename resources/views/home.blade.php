@@ -14,6 +14,7 @@
         <th>Akcje</th>
     </tr>
     @foreach ($oferty as $offer)
+
           
         <tr>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->obraz}}</td>
@@ -29,6 +30,13 @@
                     Report
                 </button>
                                 <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+                    Zgłoś się!
+                </button>
+
+               
+
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+
                     Zgłoś się!
                 </button>
 
@@ -66,16 +74,11 @@
                     </div>
                 </div>
             </td>
-
         </tr> 
          
             
 
-        </div>
-
-        
-
-
+    
     @endforeach
 </table>
 @else
