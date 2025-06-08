@@ -246,7 +246,28 @@ public function show($id)
     return view('oferr', compact('offer'));
     
 }
+
+public function cancelReport($id)
+{
+    $report = Report::findOrFail($id);
+    $report->delete();
+
+    return redirect()->back()->with('success', 'Zgłoszenie zostało cofnięte.');
 }
+
+public function banUser($userId)
+{
+    // Zbanuj użytkownika
+    $user = User::findOrFail($userId);
+    $user->role = 'banned';
+    $user->save();
+
+    // Usuń jego ogłoszenia
+    Oferty::where('user_id', $userId)->delete();
+
+    return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
+}}
+
 
 
 

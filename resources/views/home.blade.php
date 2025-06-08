@@ -5,10 +5,8 @@
 @if(isset($oferty))
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
-
         <th>Obraz</th>
         <th>Tytul</th>
-
         <th>Rodzaj</th>
         <th>Lokalizacja</th>
         <th>Wynagrodzenie</th>
@@ -16,7 +14,6 @@
         <th>Akcje</th>
     </tr>
     @foreach ($oferty as $offer)
-
 
           
         <tr>
@@ -27,13 +24,16 @@
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zapłata: {{ $offer->cena}} zł</td>
             <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;"><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
            
-
-
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
                     Report
                 </button>
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+                    Zgłoś się!
+                </button>
+
+               
 
                                 <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
 
@@ -74,18 +74,11 @@
                     </div>
                 </div>
             </td>
-
-
         </tr> 
          
             
 
-       
-
-        
-
-
-
+    
     @endforeach
 </table>
 @else
