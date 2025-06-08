@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
-
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -236,6 +235,18 @@ public function destroy($id)
 
     return view('home', compact('oferty'));
 }
+
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
+}
+public function show($id)
+{
+    $offer = Oferty::with('user')->findOrFail($id);
+    return view('oferr', compact('offer'));
+    
+}
+
 public function cancelReport($id)
 {
     $report = Report::findOrFail($id);
@@ -255,9 +266,8 @@ public function banUser($userId)
     Oferty::where('user_id', $userId)->delete();
 
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
-}
+}}
 
-}
 
 
 

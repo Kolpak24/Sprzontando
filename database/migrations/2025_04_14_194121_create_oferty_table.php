@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('lokalizacja');
             $table->decimal('cena', 10, 2);
             $table->timestamps();
-            $table->string('rodzaj');
+            $table->string('rodzaj')->nullable();
             $table->string('status')->default('pending');
+            $table->string('obraz')->nullable();
 
             // relacja z tabelą users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

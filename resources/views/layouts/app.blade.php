@@ -56,7 +56,7 @@
                         @else
                             @if(Auth::user()->role === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('adminpanel') }}">{{ __('Admin Panel') }}</a>
+                                   <a class="nav-link text-center text-nowrap w-100" href="{{ route('adminpanel') }}"> {{ __('Admin Panel') }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">

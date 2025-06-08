@@ -38,10 +38,12 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/adminpanel', [SprzontandoController::class, 'adminpanel'])->name('adminpanel');
 
     Route::get('/myoffers/{id}', [SprzontandoController::class, 'destroy'])->name('profile.deleteoffers');
+    Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
 });
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
+
 
 
 Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
