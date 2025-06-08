@@ -18,7 +18,7 @@
     @endif
 
     {{-- Formularz dodawania oferty --}}
-    <form action="{{ route('profile.addofert') }}" method="POST">
+    <form action="{{ route('profile.addofert') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -57,6 +57,11 @@
         <div class="mb-3">
             <label for="cena" class="form-label">Cena (PLN)</label>
             <input type="number" name="cena" id="cena" class="form-control" step="0.01" min="0" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="obraz" class="form-label">Dodaj zdjęcie</label>
+            <input type="file" name="obraz" id="obraz" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-success">Dodaj ofertę</button>
