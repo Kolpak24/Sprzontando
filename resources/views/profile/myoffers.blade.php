@@ -36,11 +36,11 @@
                     <img src="https://via.placeholder.com/100x70?text=Brak+zdjęcia" alt="Brak zdjęcia">
             @endif
             </td>
-            <td>{{$moffer->tytul}}</td>
-            <td>{{ $moffer->rodzaj }}</td>
-            <td>{{ $moffer->lokalizacja }}</td>
-            <td>Cena: {{ $moffer->cena }} zł</td>
-            <td>{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{$moffer->tytul}}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ $moffer->rodzaj }}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ $moffer->lokalizacja }}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">Cena: {{ $moffer->cena }} zł</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
