@@ -36,7 +36,7 @@
                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">Report</button>
 
                 @if(Auth::check() && Auth::user()->role === 'admin')
-                    <form action="{{ route('profile.deleteoffers', $offer->id) }}" method="POST" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
+                    <form action="{{ route('profile.deleteoffers', $offer->id) }}" method="get" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
