@@ -28,7 +28,7 @@
                     {{ config('app.name', 'Laravel') }}
 
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" >
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -37,7 +37,6 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
-@yield('filtry')
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -56,7 +55,7 @@
                         @else
                             @if(Auth::user()->role === 'admin')
                                 <li class="nav-item">
-                                   <a class="nav-link text-center text-nowrap w-100" href="{{ route('adminpanel') }}"> {{ __('Admin Panel') }}</a>
+                                    <a class="nav-link" href="{{ route('adminpanel') }}">{{ __('Admin Panel') }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
@@ -88,8 +87,9 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            @yield('zawartosc')
         </main>
     </div>
 </body>
 </html>
+600 171 190

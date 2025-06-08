@@ -1,30 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
+
 @if(isset($oferty))
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
+        <th>Obraz</th>
+        <th>Tytul</th>
         <th>Rodzaj</th>
         <th>Lokalizacja</th>
-        <th>Cena</th>
+        <th>Wynagrodzenie</th>
         <th>Opis</th>
-        <th>Akcje</th> {{-- NOWA kolumna --}}
+        <th>Akcje</th>
     </tr>
     @foreach ($oferty as $offer)
-        <div    class="your-div-class"
-    data-bs-toggle="modal" 
-    data-bs-target="#ofertaModal"
-    style="cursor: pointer;">
+          
         <tr>
-            <td>{{ $offer->rodzaj }}</td>
-            <td>{{ $offer->lokalizacja }}</td>
-            <td>Cena: {{ $offer->cena }} zł</td>
-            <td>{{ $offer->opis }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->obraz}}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->tytul }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->rodzaj }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->lokalizacja }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zapłata: {{ $offer->cena}} zł</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;"><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
+           
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
                     Report
                 </button>
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+                    Zgłoś się!
+                </button>
+
+               
 
                 <!-- Modal zgłoszenia -->
                 <div class="modal fade" id="reportModal{{ $offer->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $offer->id }}" aria-hidden="true">
@@ -58,7 +66,16 @@
                     </div>
                 </div>
             </td>
-        </tr></div>
+
+        </tr> 
+         
+            
+
+        </div>
+
+        
+
+
     @endforeach
 </table>
 @else
@@ -127,6 +144,7 @@
         </div>
     
         <button type="submit" class="btn btn-success w-100">Zastosuj</button>
+        
         </form>
       </div>
     </div>
