@@ -56,7 +56,28 @@
                 </p>
                 <hr>
                 <p>Zgłosił: {{ $offer->user->name }} </p>
-                
+                @auth
+                    @php
+                        $applicants = collect($offer->applicants ?? []);
+                        $userApplied = $applicants->contains(auth()->user()->id);
+                    @endphp
+
+                    @if (!$userApplied)
+                        <form method="POST" action="{{ route('offer.apply', $offer->id) }}" class="mt-3">
+                            @if(session('message'))
+                                <div class="alert alert-success mt-3">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Zgłoś się do wykonania zlecenia</button>
+                        </form>
+                    @else
+                        <div class="alert alert-success mt-3">
+                            Już zgłosiłeś się do tej oferty.
+                        </div>
+                    @endif
+                @endauth
             </div>
         </div>
 

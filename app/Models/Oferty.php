@@ -11,6 +11,10 @@ class Oferty extends Model
 
     protected $table = 'oferty';
 
+    protected $casts = [
+    'applicants' => 'array',
+    ];
+
     protected $fillable = [
         'user_id',
         'tytul',

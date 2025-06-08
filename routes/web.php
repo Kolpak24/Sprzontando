@@ -52,3 +52,5 @@ Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelR
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
+
+Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');

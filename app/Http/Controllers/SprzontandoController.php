@@ -90,7 +90,7 @@ class SprzontandoController extends Controller
     ]);
 
     return back()->with('success', 'Zgłoszenie zostało wysłane.');
-}
+    }
 
     public function userpanel()
     {
@@ -118,7 +118,7 @@ class SprzontandoController extends Controller
     }
     
     public function storeOferta(Request $request)
-{
+    {
     $request->validate([
         'tytul' => 'required|string|max:255',
         'opis' => 'required|string',
@@ -147,7 +147,31 @@ class SprzontandoController extends Controller
     ]);
 
     return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
+}    
+    public function apply($id)
+{
+    $offer = Oferty::findOrFail($id);
+    $userId = auth()->id();
+
+    // pobierz aktualną tablicę applicants lub pustą
+    $applicants = $offer->applicants ?? [];
+
+    // sprawdź, czy user już jest na liście
+    if (in_array($userId, $applicants)) {
+        return back()->with('message', 'Już zgłosiłeś się do tej oferty.');
+    }
+
+    // dodaj usera do tablicy
+    $applicants[] = $userId;
+
+    // zapisz z powrotem do kolumny jako JSON (dzięki castowi Laravel zrobi to automatycznie)
+    $offer->applicants = $applicants;
+    $offer->save();
+
+    return back()->with('message', 'Pomyślnie zgłosiłeś się do wykonania zlecenia!');
 }
+
+
 
 public function destroy($id)
 {
