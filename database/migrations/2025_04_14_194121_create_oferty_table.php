@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('rodzaj')->nullable();
             $table->string('status')->default('pending');
             $table->string('obraz')->nullable();
+            $table->json('applicants')->nullable();
 
             // relacja z tabelą users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -35,6 +36,10 @@ return new class extends Migration
     {
         Schema::table('oferty', function (Blueprint $table) {
             $table->dropColumn('status');
-    });
+        });
+        
+         Schema::table('oferty', function (Blueprint $table) {
+        $table->dropColumn('applicants');
+        });
     }
 };
