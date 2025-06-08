@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <style>
 .fixed-img {
   width: 100%;        /* szerokość karty */
