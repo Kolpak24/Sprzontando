@@ -1,15 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
+
     <h1 class="mb-4">Admin Panel</h1>
     <div class="mb-4">
         <nav class="nav nav-pills">
-            <a class="nav-link" href="{{ route('adminpanel') }}">Zgłoszone oferty</a>
-            <a class="nav-link active" href="{{ route('statystyki') }}">Statystyki</a>
+            <a class="nav-link" href="{{ route('adminpanel' ) }}">Zgłoszone oferty</a>
+            <a class="nav-link" href="{{ route('statystyki') }}">Statystyki</a>
         </nav> 
-    </div>
+</div>
 
+
+
+
+
+<div class="container">
     <div class="alert alert-success">
         <h4 class="mb-0">Cześć {{ Auth::user()->name }}! 👋</h4>
         <p>A co to za śliczny administrator tu przyszedł!</p>
@@ -17,9 +24,6 @@
 
 
     <h2>Tutaj sa statystyki użytkowników.</h2>
-
-
-    <h2 class="mb-3">Tutaj są statystyki użytkowników.</h2>
 
 
     <form method="GET" action="{{ route('statystyki') }}" class="mb-3 d-flex gap-2">
@@ -33,6 +37,8 @@
                 <th>ID</th>
                 <th>Nazwa</th>
                 <th>Rola</th>
+                <th>Ile ogłoszeń</th>
+                <th>Ocena</th>
                 <th>Utworzono</th>
 
                 <th>Ile ogłoszeń</th>
@@ -60,3 +66,4 @@
     </table>
 </div>
 @endsection
+
