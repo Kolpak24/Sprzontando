@@ -340,7 +340,6 @@ public function banUser($userId)
 }
 
 
-
 public function softDeleteOffer($id)
 {
     $offer = Oferty::find($id);
@@ -356,6 +355,7 @@ public function softDeleteOffer($id)
 }
 
     public function statystyki(Request $request)
+
 {
     $query = User::withCount('oferta');
 
@@ -367,6 +367,7 @@ public function softDeleteOffer($id)
         });
     }
 
+
     $users = $query->get();
 
     return view('profile.statystyki', compact('users'));
@@ -375,16 +376,16 @@ public function closeRequest($id)
 {
     $report = Report::find($id);
 
+  
     if (!$report) {
         return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
     }
 
     $report->delete();
 
+
     return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
 }
 }
-
-
 
 
