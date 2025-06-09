@@ -23,23 +23,7 @@
     </div>
 
     <h2>Tutaj sa statystyki użytkowników.</h2>
-<table class="table table-bordered table-striped table-hover w-100">
-    <tr>
-        <td>ID</td>
-        <td>Nazwa</td>
-        <td>Rola</td>
-        <td>Utworzono</td>
-    </tr>
 
-<<<<<<< Updated upstream
-    @foreach ($users as $user)
-        <tr>
-            <td>{{ $user->id }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->role }}</td>
-            <td>{{ $user->created_at }}</td>
-    @endforeach  
-=======
     <form method="GET" action="{{ route('statystyki') }}" class="mb-3 d-flex gap-2">
         <input type="text" name="search" value="{{ request('search') }}" class="form-control w-25" placeholder="Szukaj po ID lub nazwie">
         <button type="submit" class="btn btn-primary">Szukaj</button>
@@ -51,9 +35,9 @@
                 <th>ID</th>
                 <th>Nazwa</th>
                 <th>Rola</th>
+                <th>Utworzono</th>
                 <th>Ile ogłoszeń</th>
                 <th>Ocena</th>
-                <th>Utworzono</th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +55,7 @@
             @endforelse
         </tbody>
     </table>
->>>>>>> Stashed changes
+
 </div>
 @endsection
 
