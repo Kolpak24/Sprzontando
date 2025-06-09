@@ -39,6 +39,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/myoffers/{id}', [SprzontandoController::class, 'destroy'])->name('profile.deleteoffers');
     Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
+
+    Route::get('/statystyki', [SprzontandoController::class, 'statystyki'])->name('statystyki');
 });
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
@@ -54,3 +56,4 @@ Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelR
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
 Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
+
