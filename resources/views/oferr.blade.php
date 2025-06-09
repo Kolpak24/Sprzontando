@@ -58,17 +58,18 @@
                 <p>Zgłosił: {{ $offer->user->name }} </p>
                 @auth
                     @php
+                        $userId = auth()->id();
                         $applicants = collect($offer->applicants ?? []);
-                        $userApplied = $applicants->contains(auth()->user()->id);
+                        $userApplied = $applicants->contains($userId);
+                        $isOwnOffer = $offer->user_id === $userId;
                     @endphp
 
-                    @if (!$userApplied)
+                    @if ($isOwnOffer)
+                        <div class="alert alert-warning mt-3">
+                            Nie możesz zgłosić się do własnej oferty.
+                        </div>
+                    @elseif (!$userApplied)
                         <form method="POST" action="{{ route('offer.apply', $offer->id) }}" class="mt-3">
-                            @if(session('message'))
-                                <div class="alert alert-success mt-3">
-                                    {{ session('message') }}
-                                </div>
-                            @endif
                             @csrf
                             <button type="submit" class="btn btn-primary">Zgłoś się do wykonania zlecenia</button>
                         </form>
@@ -78,9 +79,7 @@
                         </div>
                     @endif
                 @endauth
-            </div>
         </div>
-
     </div>
 </div>
 @endsection
