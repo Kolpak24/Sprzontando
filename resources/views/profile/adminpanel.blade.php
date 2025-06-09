@@ -70,7 +70,7 @@
 </table>
 </div>
 @else
-    <p>brak zgłoszeń</p>
+    <p>Brak zgłoszeń</p>
 @endif
 @endsection
 
