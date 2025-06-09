@@ -339,13 +339,7 @@ public function banUser($userId)
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
 }
 
-<<<<<<< Updated upstream
-    public function statystyki()
-    {
-        // Tu można dodać np. liczbę użytkowników, ofert itp.
-        // Przykład: $users = User::count();
-        $users = User::withCount('oferta')->get();
-=======
+
 public function softDeleteOffer($id)
 {
     $offer = Oferty::find($id);
@@ -360,16 +354,18 @@ public function softDeleteOffer($id)
     return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
 }
 
-    public function statystyki(Request $request)
+        public function statystyki(Request $request)
 {
     $query = User::withCount('oferta');
->>>>>>> Stashed changes
 
-        return view('profile.statystyki', compact('users'));
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('id', $search)
+              ->orWhere('name', 'like', "%{$search}%");
+        });
     }
 
-<<<<<<< Updated upstream
-=======
     $users = $query->get();
 
     return view('profile.statystyki', compact('users'));
@@ -386,9 +382,8 @@ public function closeRequest($id)
 
     return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
 }
->>>>>>> Stashed changes
+
+
 }
-
-
 
 
