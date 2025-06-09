@@ -332,14 +332,22 @@ public function banUser($userId)
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
 }
 
-    public function statystyki()
-    {
-        // Tu można dodać np. liczbę użytkowników, ofert itp.
-        // Przykład: $users = User::count();
-        $users = User::withCount('oferta')->get();
+    public function statystyki(Request $request)
+{
+    $query = User::withCount('oferta');
 
-        return view('profile.statystyki', compact('users'));
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('id', $search)
+              ->orWhere('name', 'like', "%{$search}%");
+        });
     }
+
+    $users = $query->get();
+
+    return view('profile.statystyki', compact('users'));
+}
 
 }
 
