@@ -274,10 +274,41 @@ public function user()
     return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
 }
 public function show($id)
+
 {
     $offer = Oferty::with('user')->findOrFail($id);
-    return view('oferr', compact('offer'));
-    
+
+    $applicantIds = $offer->applicants ?? [];
+
+    // Pobieramy userów, którzy się zgłosili
+    $applicants = User::whereIn('id', $applicantIds)->get();
+
+    return view('oferr', compact('offer', 'applicants'));
+}
+
+public function chooseApplicant($offerId, $userId)
+{
+    // 1) Znajdź ofertę
+    $offer = Oferty::findOrFail($offerId);
+
+    // 2) Sprawdź, czy aktualnie zalogowany user jest właścicielem oferty
+    if ($offer->user_id !== auth()->id()) {
+        abort(403, 'Nie masz uprawnień, aby wybrać wykonawcę do tej oferty.');
+    }
+
+    // 3) Pobierz tablicę ID zgłoszonych (JSON)
+    $applicantIds = $offer->applicants ?? [];
+
+    // 4) Sprawdź, czy podany $userId jest wśród zgłoszonych
+    if (!in_array($userId, $applicantIds)) {
+        return back()->with('error', 'Ten użytkownik nie zgłosił się do tej oferty.');
+    }
+
+    // 5) Zapisz do kolumny chosen_user_id
+    $offer->chosen_user_id = $userId;
+    $offer->save();
+
+    return back()->with('success', 'Pomyślnie wybrano wykonawcę zlecenia.');
 }
 
 public function cancelReport($id)
@@ -301,14 +332,22 @@ public function banUser($userId)
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
 }
 
-    public function statystyki()
-    {
-        // Tu można dodać np. liczbę użytkowników, ofert itp.
-        // Przykład: $users = User::count();
-        $users = User::withCount('oferta')->get();
+    public function statystyki(Request $request)
+{
+    $query = User::withCount('oferta');
 
-        return view('profile.statystyki', compact('users'));
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('id', $search)
+              ->orWhere('name', 'like', "%{$search}%");
+        });
     }
+
+    $users = $query->get();
+
+    return view('profile.statystyki', compact('users'));
+}
 
 }
 

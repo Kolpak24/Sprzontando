@@ -57,3 +57,10 @@ Route::get('/home', [SprzontandoController::class, 'filtry']);
 
 Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
 
+Route::middleware('auth')->group(function () {
+    // ... inne trasy chronione
+
+    // Trasa do wyboru wykonawcy
+    Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])
+        ->name('offer.choose');
+});
