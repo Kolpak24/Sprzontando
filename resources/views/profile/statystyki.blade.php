@@ -22,7 +22,9 @@
         <p>A co to za śliczny administrator tu przyszedł!</p>
     </div>
 
+
     <h2>Tutaj sa statystyki użytkowników.</h2>
+
 
     <form method="GET" action="{{ route('statystyki') }}" class="mb-3 d-flex gap-2">
         <input type="text" name="search" value="{{ request('search') }}" class="form-control w-25" placeholder="Szukaj po ID lub nazwie">
@@ -38,6 +40,13 @@
                 <th>Ile ogłoszeń</th>
                 <th>Ocena</th>
                 <th>Utworzono</th>
+
+                <th>Ile ogłoszeń</th>
+                <th>Ocena</th>
+
+                <th>Ile ogłoszeń</th>
+                <th>Ocena</th>
+
             </tr>
         </thead>
         <tbody>
