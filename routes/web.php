@@ -41,6 +41,15 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
 
     Route::get('/statystyki', [SprzontandoController::class, 'statystyki'])->name('statystyki');
+
+    Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
+
+    Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
+    Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
+
+    Route::post('/admin/usun-oferte/{id}', [SprzontandoController::class, 'softDeleteOffer'])->name('admin.softDeleteOffer');
+
+    Route::delete('/admin/close-request/{id}', [SprzontandoController::class, 'closeRequest'])->name('admin.closeRequest');
 });
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
@@ -48,19 +57,14 @@ Route::get('/home', [SprzontandoController::class, 'filtry']);
 
 
 
-Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
-Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
-
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
-Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
 
 Route::middleware('auth')->group(function () {
     // ... inne trasy chronione
 
     // Trasa do wyboru wykonawcy
-    Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])
-        ->name('offer.choose');
+    Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
