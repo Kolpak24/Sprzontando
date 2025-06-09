@@ -10,8 +10,7 @@
     <div class="mb-4">
         <nav class="nav nav-pills">
             <a class="nav-link" href="{{ route('adminpanel' ) }}">Zgłoszone oferty</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Oceny</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Statystyki</a>
+            <a class="nav-link" href="{{ route('statystyki') }}">Statystyki</a>
         </nav> 
 </div>
 
@@ -25,8 +24,7 @@
         <p>A co to za śliczny administrator tu przyszedł!</p>
     </div>
 
-    <h1>Panel administratora</h1>
-    <p>Tu będą wyświetlane zgłoszone oferty.</p>
+    <h2>Tu będą wyświetlane zgłoszone oferty.</h2>
 
 
 <table class="table table-bordered table-striped table-hover w-100">
