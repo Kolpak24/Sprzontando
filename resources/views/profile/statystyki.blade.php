@@ -31,6 +31,7 @@
         <td>Utworzono</td>
     </tr>
 
+<<<<<<< Updated upstream
     @foreach ($users as $user)
         <tr>
             <td>{{ $user->id }}</td>
@@ -38,6 +39,39 @@
             <td>{{ $user->role }}</td>
             <td>{{ $user->created_at }}</td>
     @endforeach  
+=======
+    <form method="GET" action="{{ route('statystyki') }}" class="mb-3 d-flex gap-2">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control w-25" placeholder="Szukaj po ID lub nazwie">
+        <button type="submit" class="btn btn-primary">Szukaj</button>
+    </form>
+
+    <table class="table table-bordered table-striped table-hover w-100">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Rola</th>
+                <th>Ile ogłoszeń</th>
+                <th>Ocena</th>
+                <th>Utworzono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->role }}</td>
+                    <td>{{ $user->created_at }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5">Brak użytkowników do wyświetlenia</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+>>>>>>> Stashed changes
 </div>
 @endsection
 

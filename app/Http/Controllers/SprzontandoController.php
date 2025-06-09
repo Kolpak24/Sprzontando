@@ -94,7 +94,11 @@ class SprzontandoController extends Controller
 
     public function userpanel()
     {
-        return view('profile.userpanel', ['user' => Auth::user()]);
+       // return view('profile.userpanel', ['user' => Auth::user()]);
+
+        $oferty = Oferty::where('user_id', Auth::id())->get();
+
+        return view('profile.userpanel', ['user' => Auth::user()], compact('oferty'));
     }
 
     public function myoffers()
@@ -188,15 +192,18 @@ public function destroy($id)
 }
     public function index()
     { 
-        $oferty = Oferty::orderBy('created_at', 'desc')->get();
-
+        $oferty = Oferty::where('status', '!=', 'deleted')
+                ->orderBy('created_at', 'desc')
+                ->get();
         return view('home', compact('oferty'));
 
     }
     
     public function myoffer()
     {
-        $myoffer = Oferty::where('user_id', Auth::id())->get();
+        $myoffer = Oferty::where('user_id', Auth::id())
+                 ->where('status', '!=', 'deleted')
+                 ->get();
     return view('profile.myoffers', compact('myoffer'));
     }
      public function updateoferty(Request $request)
@@ -224,7 +231,7 @@ public function destroy($id)
 
     public function filtry(Request $request)
     {
-        $query = Oferty::query();
+        $query = Oferty::where('status', '!=', 'deleted');
     if ($request->has('sortuj')) {
         $sort = $request->input('sortuj');
 
@@ -332,15 +339,54 @@ public function banUser($userId)
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
 }
 
+<<<<<<< Updated upstream
     public function statystyki()
     {
         // Tu można dodać np. liczbę użytkowników, ofert itp.
         // Przykład: $users = User::count();
         $users = User::withCount('oferta')->get();
+=======
+public function softDeleteOffer($id)
+{
+    $offer = Oferty::find($id);
+
+    if (!$offer) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie została znaleziona.');
+    }
+
+    $offer->status = 'deleted';
+    $offer->save();
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
+}
+
+    public function statystyki(Request $request)
+{
+    $query = User::withCount('oferta');
+>>>>>>> Stashed changes
 
         return view('profile.statystyki', compact('users'));
     }
 
+<<<<<<< Updated upstream
+=======
+    $users = $query->get();
+
+    return view('profile.statystyki', compact('users'));
+}
+public function closeRequest($id)
+{
+    $report = Report::find($id);
+
+    if (!$report) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+    }
+
+    $report->delete();
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
+}
+>>>>>>> Stashed changes
 }
 
 

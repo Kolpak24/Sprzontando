@@ -43,7 +43,7 @@
             <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
             <td>
                 <!-- Przycisk do otwierania modala -->
-                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
+                <button class="btn  btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
                     Edytuj
                 </button>
                 <div class="modal fade" id="editModal{{ $moffer->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $moffer->id }}" aria-hidden="true">
@@ -99,11 +99,11 @@
                 </div>
 
                  
-              <form action="{{ route('profile.deleteoffers', $moffer->id) }}" method="get" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
-             @csrf
-                @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-</form>
+                <form action="{{ route('profile.deleteoffers', $moffer->id) }}" method="get" style="display:inline-block; margin-left: 5px;" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                </form>
             </td> 
         </tr>
                 @endforeach

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('cena', 10, 2);
             $table->timestamps();
             $table->string('rodzaj')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('active');
             $table->string('obraz')->nullable();
             $table->json('applicants')->nullable();
             $table->unsignedBigInteger('chosen_user_id')->nullable(); // bez ->after()
