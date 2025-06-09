@@ -59,7 +59,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">Brak użytkowników do wyświetlenia</td>
+                    <td colspan="6">Brak użytkowników do wyświetlenia</td>
                 </tr>
             @endforelse
         </tbody>
