@@ -37,16 +37,9 @@
                 <th>ID</th>
                 <th>Nazwa</th>
                 <th>Rola</th>
-                <th>Ile ogłoszeń</th>
-                <th>Ocena</th>
                 <th>Utworzono</th>
-
                 <th>Ile ogłoszeń</th>
                 <th>Ocena</th>
-
-                <th>Ile ogłoszeń</th>
-                <th>Ocena</th>
-
             </tr>
         </thead>
         <tbody>
