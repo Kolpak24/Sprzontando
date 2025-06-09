@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Oferty extends Model
 {
@@ -12,7 +13,7 @@ class Oferty extends Model
     protected $table = 'oferty';
 
     protected $casts = [
-    'applicants' => 'array',
+        'applicants' => 'array',  // już miałeś
     ];
 
     protected $fillable = [
@@ -23,10 +24,19 @@ class Oferty extends Model
         'cena',
         'rodzaj',
         'obraz',
+        'chosen_user_id',  // dopiszemy to, żeby móc masowo przypisywać
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * RELACJA do wybranego wykonawcy (użytkownika).
+     */
+    public function chosenApplicant()
+    {
+        return $this->belongsTo(User::class, 'chosen_user_id');
     }
 }

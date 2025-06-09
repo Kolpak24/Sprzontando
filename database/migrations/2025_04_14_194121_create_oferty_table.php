@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->string('obraz')->nullable();
             $table->json('applicants')->nullable();
+            $table->unsignedBigInteger('chosen_user_id')->nullable()->after('applicants');
+            $table->foreign('chosen_user_id')->references('id')->on('users')->onDelete('set null');
 
             // relacja z tabelą users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -34,12 +36,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('oferty', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
-        
          Schema::table('oferty', function (Blueprint $table) {
-        $table->dropColumn('applicants');
+            $table->dropColumn('applicants');
+            $table->dropForeign(['chosen_user_id']);
+            $table->dropColumn('chosen_user_id');
+            $table->dropColumn('status');
         });
     }
 };
