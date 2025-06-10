@@ -55,8 +55,12 @@ Route::middleware('auth', 'verified')->group(function () {
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
+
+
+
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
+
 
 Route::middleware('auth')->group(function () {
     // ... inne trasy chronione
@@ -64,9 +68,3 @@ Route::middleware('auth')->group(function () {
     // Trasa do wyboru wykonawcy
     Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
-
-
-Route::get('/oferty/{offer}/rate', [SprzontandoController::class, 'createRating'])->name('ratings.create');
-Route::post('/oferty/{offer}/rate', [SprzontandoController::class, 'storeRating'])->name('ratings.store');
-Route::get('/offers/{offer}', [SprzontandoController::class, 'show'])->name('offer.show');
-Route::get('/profile/ratings', [SprzontandoController::class, 'myRatings'])->name('profile.ratings');
