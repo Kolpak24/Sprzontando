@@ -39,4 +39,8 @@ class Oferty extends Model
     {
         return $this->belongsTo(User::class, 'chosen_user_id');
     }
+    public function rating()
+    {
+        return $this->hasOne(Rating::class, 'offer_id');
+    }
 }

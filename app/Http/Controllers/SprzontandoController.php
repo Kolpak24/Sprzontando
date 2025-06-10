@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Rating;
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -284,72 +285,71 @@ public function destroy($id)
     return view('home', compact('oferty'));
 }
 
-public function user()
-{
-    return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
-}
-public function show($id)
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
+    }
+    public function show($id)
+    {
+        // Dokładamy relację 'rating' do wczytania razem z 'user'
+        $offer = Oferty::with(['user', 'rating'])->findOrFail($id);
 
-{
-    $offer = Oferty::with('user')->findOrFail($id);
+        $applicantIds = $offer->applicants ?? [];
+        $applicants   = User::whereIn('id', $applicantIds)->get();
 
-    $applicantIds = $offer->applicants ?? [];
-
-    // Pobieramy userów, którzy się zgłosili
-    $applicants = User::whereIn('id', $applicantIds)->get();
-
-    return view('oferr', compact('offer', 'applicants'));
-}
-
-public function chooseApplicant($offerId, $userId)
-{
-    // 1) Znajdź ofertę
-    $offer = Oferty::findOrFail($offerId);
-
-    // 2) Sprawdź, czy aktualnie zalogowany user jest właścicielem oferty
-    if ($offer->user_id !== auth()->id()) {
-        abort(403, 'Nie masz uprawnień, aby wybrać wykonawcę do tej oferty.');
+        return view('oferr', compact('offer', 'applicants'));
     }
 
-    // 3) Pobierz tablicę ID zgłoszonych (JSON)
-    $applicantIds = $offer->applicants ?? [];
 
-    // 4) Sprawdź, czy podany $userId jest wśród zgłoszonych
-    if (!in_array($userId, $applicantIds)) {
-        return back()->with('error', 'Ten użytkownik nie zgłosił się do tej oferty.');
+    public function chooseApplicant($offerId, $userId)
+    {
+        // 1) Znajdź ofertę
+        $offer = Oferty::findOrFail($offerId);
+
+        // 2) Sprawdź, czy aktualnie zalogowany user jest właścicielem oferty
+        if ($offer->user_id !== auth()->id()) {
+            abort(403, 'Nie masz uprawnień, aby wybrać wykonawcę do tej oferty.');
+        }
+
+        // 3) Pobierz tablicę ID zgłoszonych (JSON)
+        $applicantIds = $offer->applicants ?? [];
+
+        // 4) Sprawdź, czy podany $userId jest wśród zgłoszonych
+        if (!in_array($userId, $applicantIds)) {
+            return back()->with('error', 'Ten użytkownik nie zgłosił się do tej oferty.');
+        }
+
+        // 5) Zapisz do kolumny chosen_user_id
+        $offer->chosen_user_id = $userId;
+        $offer->save();
+
+        return back()->with('success', 'Pomyślnie wybrano wykonawcę zlecenia.');
     }
 
-    // 5) Zapisz do kolumny chosen_user_id
-    $offer->chosen_user_id = $userId;
-    $offer->save();
+    public function cancelReport($id)
+    {
+        $report = Report::findOrFail($id);
+        $report->delete();
 
-    return back()->with('success', 'Pomyślnie wybrano wykonawcę zlecenia.');
-}
+        return redirect()->back()->with('success', 'Zgłoszenie zostało cofnięte.');
+    }
 
-public function cancelReport($id)
-{
-    $report = Report::findOrFail($id);
-    $report->delete();
+    public function banUser($userId)
+    {
+        // Zbanuj użytkownika
+        $user = User::findOrFail($userId);
+        $user->role = 'banned';
+        $user->save();
 
-    return redirect()->back()->with('success', 'Zgłoszenie zostało cofnięte.');
-}
+        // Usuń jego ogłoszenia
+        Oferty::where('user_id', $userId)->delete();
 
-public function banUser($userId)
-{
-    // Zbanuj użytkownika
-    $user = User::findOrFail($userId);
-    $user->role = 'banned';
-    $user->save();
-
-    // Usuń jego ogłoszenia
-    Oferty::where('user_id', $userId)->delete();
-
-    return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
-}
+        return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
+    }
 
 
-public function softDeleteOffer($id)
-{
+    public function softDeleteOffer($id)
+    {
     $offer = Oferty::find($id);
 
     if (!$offer) {
@@ -360,41 +360,73 @@ public function softDeleteOffer($id)
     $offer->save();
 
     return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
-}
+    }
 
     public function statystyki(Request $request)
 
-{
-    $query = User::withCount('oferta');
+    {
+        $query = User::withCount('oferta');
 
-    if ($request->filled('search')) {
-        $search = $request->input('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('id', $search)
-              ->orWhere('name', 'like', "%{$search}%");
-        });
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+
+        $users = $query->get();
+
+        return view('profile.statystyki', compact('users'));
+    }
+    public function closeRequest($id)
+    {
+        $report = Report::find($id);
+
+    
+        if (!$report) {
+            return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+        }
+
+        $report->delete();
+
+
+        return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
+    }
+    public function createRating(Oferty $offer)
+    {
+        return view('ratings.create', compact('offer'));
     }
 
+    public function storeRating(Request $request)
+    {
+        \Log::info('Request data:', $request->all());
 
-    $users = $query->get();
+        $validated = $request->validate([
+            'offer_id'             => 'required|exists:oferty,id',
+            'rating_from_user_id'  => 'required|exists:users,id',
+            'rating_to_user_id'    => 'required|exists:users,id',
+            'stars'                => 'required|integer|min:1|max:5',
+            'comment'              => 'nullable|string|max:255',
+        ]);
 
-    return view('profile.statystyki', compact('users'));
-}
-public function closeRequest($id)
-{
-    $report = Report::find($id);
+        \Log::info('Validated data:', $validated);
 
-  
-    if (!$report) {
-        return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+        $offer = Oferty::findOrFail($validated['offer_id']);
+
+        if ($offer->user_id !== (int) $validated['rating_from_user_id']) {
+            return redirect()->back()->withErrors('Nie możesz ocenić tej oferty – nie jesteś jej właścicielem.');
+        }
+
+        if (Rating::where('offer_id', $offer->id)->exists()) {
+            return redirect()->back()->withErrors('Ta oferta została już oceniona.');
+        }
+
+        Rating::create($validated);
+
+        return redirect()->back()->with('success', 'Ocena została pomyślnie dodana.');
     }
-
-    $report->delete();
-
-
-    return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
-}
-
 
 }
 
