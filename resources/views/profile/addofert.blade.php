@@ -30,7 +30,7 @@
             <label for="check" class="form-label">Mycie auta</label>
             <input type="checkbox" name="rodzaj[]" id="check" class="sm" value="auto" ><br>
 
-            <label for="check2" class="form-label">zamiatanie</label>
+            <label for="check2" class="form-label">Zamiatanie</label>
             <input type="checkbox" name="rodzaj[]" id="check2" class="sm" value="zamiatanie" ><br>
 
             <label for="check3" class="form-label">Mycie okien</label>

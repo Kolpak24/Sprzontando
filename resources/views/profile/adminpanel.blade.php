@@ -10,8 +10,7 @@
     <div class="mb-4">
         <nav class="nav nav-pills">
             <a class="nav-link" href="{{ route('adminpanel' ) }}">Zgłoszone oferty</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Oceny</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Statystyki</a>
+            <a class="nav-link" href="{{ route('statystyki') }}">Statystyki</a>
         </nav> 
 </div>
 
@@ -25,18 +24,18 @@
         <p>A co to za śliczny administrator tu przyszedł!</p>
     </div>
 
-    <h1>Panel administratora</h1>
-    <p>Tu będą wyświetlane zgłoszone oferty.</p>
+    <h2>Tu będą wyświetlane zgłoszone oferty.</h2>
 
 
 <table class="table table-bordered table-striped table-hover w-100">
     <tr>
         <td>ID</td>
         <td>ID_OFERTY</td>
-        <td>ID_ZGLASZAJACEGO</td>
-        <td>ID_ZGLASZANEGO</td>
+        <td>Zgłaszający</td>
+        <td>Zgłaszany</td>
         <td>Powody</td>
         <td>Opis</td>
+        <td>Status oferty</td>
         <td>Data zgłoszenia</td>
         <td>Akcje</td>
     </tr>
@@ -49,6 +48,7 @@
             <td>{{ $report->zglaszany_id }}</td>
             <td>{{ $report->powody }}</td>
             <td>{{ $report->opis }}</td>
+            <td>{{ $report->oferta->status }}</td>
             <td>{{ $report->created_at }}</td>
             <td>
                 <!-- Przycisk Zbanuj -->
@@ -63,14 +63,25 @@
                     @csrf
                     <button class="btn btn-secondary btn-sm" onclick="return confirm('Na pewno usunąć zgłoszenie?')">Cofnij zgloszenie</button>
                 </form>
-</td>
+
+                <form action="{{ route('admin.softDeleteOffer', $report->oferta_id) }}" method="POST" style="display:inline-block; margin-left: 5px;">
+                    @csrf
+                    <button class="btn btn-warning btn-sm" onclick="return confirm('Na pewno oznaczyć ofertę jako usuniętą?')">Usuń ofertę</button>
+                </form>
+
+                <form action="{{ route('admin.closeRequest', $report->id) }}" method="POST" onsubmit="return confirm('Koniec zabawy w Boga?')" style="display:inline-block; margin-left: 5px;" onclick="event.stopPropagation();">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-success btn-sm">Zamknij zgłoszenie</button>
+                </form>
+            </td>
         </tr>
 
     @endforeach
 </table>
 </div>
 @else
-    <p>brak zgłoszeń</p>
+    <p>Brak zgłoszeń</p>
 @endif
 @endsection
 

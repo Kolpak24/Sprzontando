@@ -39,22 +39,24 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/myoffers/{id}', [SprzontandoController::class, 'destroy'])->name('profile.deleteoffers');
     Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
+
+    Route::get('/statystyki', [SprzontandoController::class, 'statystyki'])->name('statystyki');
+
+    Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
+
+    Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
+    Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
+
+    Route::post('/admin/usun-oferte/{id}', [SprzontandoController::class, 'softDeleteOffer'])->name('admin.softDeleteOffer');
+
+    Route::delete('/admin/close-request/{id}', [SprzontandoController::class, 'closeRequest'])->name('admin.closeRequest');
 });
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
-
-
-Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
-Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
-
-
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
-<<<<<<< Updated upstream
-=======
-
 
 Route::middleware('auth')->group(function () {
     // ... inne trasy chronione
@@ -63,8 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
 
+
 Route::get('/oferty/{offer}/rate', [SprzontandoController::class, 'createRating'])->name('ratings.create');
 Route::post('/oferty/{offer}/rate', [SprzontandoController::class, 'storeRating'])->name('ratings.store');
 Route::get('/offers/{offer}', [SprzontandoController::class, 'show'])->name('offer.show');
 Route::get('/profile/ratings', [SprzontandoController::class, 'myRatings'])->name('profile.ratings');
->>>>>>> Stashed changes

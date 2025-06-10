@@ -23,12 +23,10 @@
 
 @section('zawartosc')
 <div class="container py-5">
-    <div class="row justify-content-center align-items-stretch"> {{-- flexbox z align-items-stretch --}}
+    <div class="row justify-content-center align-items-stretch">
 
         {{-- Lewa kolumna: oferta --}}
         <div class="col-md-8 d-flex flex-column">
-
-            {{-- Karta ze zdjęciem i tytułem --}}
             <div class="card shadow-lg rounded mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ $offer->tytul }}</h2>
@@ -40,7 +38,6 @@
                 @endif
             </div>
 
-            {{-- Lokalizacja i rodzaj --}}
             <div class="card shadow-lg rounded p-3 mb-4">
                 <p class="text-muted mb-0">
                     <i class="bi bi-geo-alt"></i> {{ $offer->lokalizacja }} |
@@ -48,26 +45,22 @@
                 </p>
             </div>
 
-            {{-- Cena --}}
             <div class="card shadow-lg rounded p-3 mb-4">
                 <h4 class="text-success mb-0">Zapłata: {{ $offer->cena }} zł</h4>
             </div>
 
-            {{-- Opis --}}
             <div class="card shadow-lg rounded p-3 mb-4 flex-grow-1">
                 <p class="card-text mb-0">
                     {{ $offer->opis }}
                 </p>
             </div>
 
-            {{-- Przycisk powrotu --}}
             <a href="{{ url('/home') }}" class="btn btn-outline-primary mt-auto">
                 ← Powrót do ofert
             </a>
-
         </div>
 
-        {{-- Prawa kolumna: duża karta (dopasowana wysokość) --}}
+        {{-- Prawa kolumna: dodatkowe informacje i zgłoszenia --}}
         <div class="col-md-4 d-flex">
             <div class="card shadow-lg rounded p-4 flex-fill">
                 <h3 class="mb-3">Dodatkowe informacje</h3>
@@ -76,15 +69,15 @@
                     Możesz też wstawić formularz, mapę lub cokolwiek innego.
                 </p>
                 <hr>
-<<<<<<< Updated upstream
-                <p>Zgłosił: {{ $offer->user->name }} </p>
-                
-=======
-                <p>Zgłosił: {{ $offer->user->name }}</p>
+
+                <p>Wystawił ogłoszenie: {{ $offer->user->name }}</p>
 
                 @auth
                     @php
                         $userId = auth()->id();
+
+                        // korzystamy z kolekcji $applicants przekazanej z kontrolera (obiekty User)
+
                         $userApplied = $applicants->pluck('id')->contains($userId);
                         $isOwnOffer = $offer->user_id === $userId;
                     @endphp
@@ -223,7 +216,35 @@
                         @endif
                     </div>
                 @endif
->>>>>>> Stashed changes
+                        <div class="card p-2" style="width: 150px;">
+                            <div class="card-body p-2 text-center">
+                                <strong>{{ $applicant->name }}</strong>
+                                @php
+                                    $chosenId = $offer->chosen_user_id;               // id już wybranego (lub null)
+                                    $isOwner  = auth()->check() && auth()->id() === $offer->user_id;
+                                @endphp
+
+                                @if($chosenId)
+                                    {{-- jeżeli oferta ma już wybranego – pokaż badge przy odpowiednim kafelku --}}
+                                    @if($chosenId === $applicant->id)
+                                        <div class="badge bg-success mt-2">Wybrany</div>
+                                    @endif
+                                @elseif($isOwner)
+                                    {{-- jeżeli nikt jeszcze nie został wybrany i to właściciel – pokaż przycisk --}}
+                                    <form method="POST"
+                                        action="{{ route('offer.choose', ['offer' => $offer->id, 'user' => $applicant->id]) }}"
+                                        class="mt-2">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-primary">
+                                            Wybierz
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>

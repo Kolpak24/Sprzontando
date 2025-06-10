@@ -92,11 +92,15 @@ class SprzontandoController extends Controller
     ]);
 
     return back()->with('success', 'Zgłoszenie zostało wysłane.');
-}
+    }
 
     public function userpanel()
     {
-        return view('profile.userpanel', ['user' => Auth::user()]);
+       // return view('profile.userpanel', ['user' => Auth::user()]);
+
+        $oferty = Oferty::where('user_id', Auth::id())->get();
+
+        return view('profile.userpanel', ['user' => Auth::user()], compact('oferty'));
     }
 
     public function myoffers()
@@ -105,7 +109,7 @@ class SprzontandoController extends Controller
     }
 
     public function myworks()
-    {
+
     $user = Auth::user();
 
     // Oferty, do których się zgłosił
@@ -115,7 +119,6 @@ class SprzontandoController extends Controller
     $selectedOffers = Oferty::where('chosen_user_id', $user->id)->get();
 
     return view('profile.myworks', compact('appliedOffers', 'selectedOffers'));
-    }
 
     public function addofert()
     {
@@ -128,7 +131,7 @@ class SprzontandoController extends Controller
     }
     
     public function storeOferta(Request $request)
-{
+    {
     $request->validate([
         'tytul' => 'required|string|max:255',
         'opis' => 'required|string',
@@ -157,7 +160,31 @@ class SprzontandoController extends Controller
     ]);
 
     return redirect()->route('profile.myoffers')->with('success', 'Oferta została dodana!');
+}    
+    public function apply($id)
+{
+    $offer = Oferty::findOrFail($id);
+    $userId = auth()->id();
+
+    // pobierz aktualną tablicę applicants lub pustą
+    $applicants = $offer->applicants ?? [];
+
+    // sprawdź, czy user już jest na liście
+    if (in_array($userId, $applicants)) {
+        return back()->with('message', 'Już zgłosiłeś się do tej oferty.');
+    }
+
+    // dodaj usera do tablicy
+    $applicants[] = $userId;
+
+    // zapisz z powrotem do kolumny jako JSON (dzięki castowi Laravel zrobi to automatycznie)
+    $offer->applicants = $applicants;
+    $offer->save();
+
+    return back()->with('message', 'Pomyślnie zgłosiłeś się do wykonania zlecenia!');
 }
+
+
 
 public function destroy($id)
 {
@@ -174,15 +201,18 @@ public function destroy($id)
 }
     public function index()
     { 
-        $oferty = Oferty::orderBy('created_at', 'desc')->get();
-
+        $oferty = Oferty::where('status', '!=', 'deleted')
+                ->orderBy('created_at', 'desc')
+                ->get();
         return view('home', compact('oferty'));
 
     }
     
     public function myoffer()
     {
-        $myoffer = Oferty::where('user_id', Auth::id())->get();
+        $myoffer = Oferty::where('user_id', Auth::id())
+                 ->where('status', '!=', 'deleted')
+                 ->get();
     return view('profile.myoffers', compact('myoffer'));
     }
      public function updateoferty(Request $request)
@@ -210,7 +240,7 @@ public function destroy($id)
 
     public function filtry(Request $request)
     {
-        $query = Oferty::query();
+        $query = Oferty::where('status', '!=', 'deleted');
     if ($request->has('sortuj')) {
         $sort = $request->input('sortuj');
 
@@ -259,18 +289,13 @@ public function user()
 {
     return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
 }
-<<<<<<< Updated upstream
-public function show($id)
-{
-    $offer = Oferty::with('user')->findOrFail($id);
-    return view('oferr', compact('offer'));
-    
-=======
 
 public function show($id)
 {
-    // Dołączamy relację 'rating', żeby w widoku od razu mieć dostęp do oceny
-    $offer = Oferty::with(['user', 'rating'])->findOrFail($id);
+    $offer = Oferty::with('user')->findOrFail($id);
+
+    return view('oferr', compact('offer'));
+    
 
     $applicantIds = $offer->applicants ?? [];
 
@@ -303,7 +328,7 @@ public function chooseApplicant($offerId, $userId)
     $offer->save();
 
     return back()->with('success', 'Pomyślnie wybrano wykonawcę zlecenia.');
->>>>>>> Stashed changes
+
 }
 
 public function cancelReport($id)
@@ -325,13 +350,9 @@ public function banUser($userId)
     Oferty::where('user_id', $userId)->delete();
 
     return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
-}}
+}
 
 
-<<<<<<< Updated upstream
-
-
-=======
 public function softDeleteOffer($id)
 {
     $offer = Oferty::find($id);
@@ -358,6 +379,56 @@ public function softDeleteOffer($id)
               ->orWhere('name', 'like', "%{$search}%");
         });
     }
+
+
+    $users = $query->get();
+
+    return view('profile.statystyki', compact('users'));
+}
+public function closeRequest($id)
+{
+    $report = Report::find($id);
+
+  
+    if (!$report) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+    }
+
+    $report->delete();
+
+public function softDeleteOffer($id)
+{
+    $offer = Oferty::find($id);
+
+    if (!$offer) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie została znaleziona.');
+    }
+
+    $offer->status = 'deleted';
+    $offer->save();
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
+}
+
+    public function statystyki(Request $request)
+
+{
+    $query = User::withCount('oferta');
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('id', $search)
+              ->orWhere('name', 'like', "%{$search}%");
+        });
+    }
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
+}
+
+
+}
+
 
 
     $users = $query->get();
@@ -457,4 +528,4 @@ public function createRating($offerId)
     }
     
 }
->>>>>>> Stashed changes
+
