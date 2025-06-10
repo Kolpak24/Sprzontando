@@ -109,7 +109,7 @@ class SprzontandoController extends Controller
     }
 
     public function myworks()
-
+    {
     $user = Auth::user();
 
     // Oferty, do których się zgłosił
@@ -119,7 +119,7 @@ class SprzontandoController extends Controller
     $selectedOffers = Oferty::where('chosen_user_id', $user->id)->get();
 
     return view('profile.myworks', compact('appliedOffers', 'selectedOffers'));
-
+    }
     public function addofert()
     {
         return view('profile.addofert', ['user' => Auth::user()]);
@@ -395,7 +395,7 @@ public function closeRequest($id)
     }
 
     $report->delete();
-
+}
 public function softDeleteOffer($id)
 {
     $offer = Oferty::find($id);
