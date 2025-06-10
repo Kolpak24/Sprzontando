@@ -53,4 +53,16 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         $this->notify(new CustomVerifyEmail);
     }
+<<<<<<< Updated upstream
+=======
+
+    public function oferta()
+    {
+    return $this->hasMany(Oferty::class);
+    }
+    public function ratingsReceived()
+    {
+        return $this->hasMany(Rating::class, 'rating_to_user_id');
+    }
+>>>>>>> Stashed changes
 }

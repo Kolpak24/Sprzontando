@@ -52,3 +52,19 @@ Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelR
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
+<<<<<<< Updated upstream
+=======
+
+
+Route::middleware('auth')->group(function () {
+    // ... inne trasy chronione
+
+    // Trasa do wyboru wykonawcy
+    Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
+});
+
+Route::get('/oferty/{offer}/rate', [SprzontandoController::class, 'createRating'])->name('ratings.create');
+Route::post('/oferty/{offer}/rate', [SprzontandoController::class, 'storeRating'])->name('ratings.store');
+Route::get('/offers/{offer}', [SprzontandoController::class, 'show'])->name('offer.show');
+Route::get('/profile/ratings', [SprzontandoController::class, 'myRatings'])->name('profile.ratings');
+>>>>>>> Stashed changes

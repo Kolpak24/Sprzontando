@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Rating;
+
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -104,7 +106,15 @@ class SprzontandoController extends Controller
 
     public function myworks()
     {
-        return view('profile.myworks', ['user' => Auth::user()]);
+    $user = Auth::user();
+
+    // Oferty, do których się zgłosił
+    $appliedOffers = Oferty::whereJsonContains('applicants', $user->id)->get();
+
+    // Oferty, w których został wybrany
+    $selectedOffers = Oferty::where('chosen_user_id', $user->id)->get();
+
+    return view('profile.myworks', compact('appliedOffers', 'selectedOffers'));
     }
 
     public function addofert()
@@ -249,11 +259,51 @@ public function user()
 {
     return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
 }
+<<<<<<< Updated upstream
 public function show($id)
 {
     $offer = Oferty::with('user')->findOrFail($id);
     return view('oferr', compact('offer'));
     
+=======
+
+public function show($id)
+{
+    // Dołączamy relację 'rating', żeby w widoku od razu mieć dostęp do oceny
+    $offer = Oferty::with(['user', 'rating'])->findOrFail($id);
+
+    $applicantIds = $offer->applicants ?? [];
+
+    // Pobieramy userów, którzy się zgłosili
+    $applicants = User::whereIn('id', $applicantIds)->get();
+
+    return view('oferr', compact('offer', 'applicants'));
+}
+
+public function chooseApplicant($offerId, $userId)
+{
+    // 1) Znajdź ofertę
+    $offer = Oferty::findOrFail($offerId);
+
+    // 2) Sprawdź, czy aktualnie zalogowany user jest właścicielem oferty
+    if ($offer->user_id !== auth()->id()) {
+        abort(403, 'Nie masz uprawnień, aby wybrać wykonawcę do tej oferty.');
+    }
+
+    // 3) Pobierz tablicę ID zgłoszonych (JSON)
+    $applicantIds = $offer->applicants ?? [];
+
+    // 4) Sprawdź, czy podany $userId jest wśród zgłoszonych
+    if (!in_array($userId, $applicantIds)) {
+        return back()->with('error', 'Ten użytkownik nie zgłosił się do tej oferty.');
+    }
+
+    // 5) Zapisz do kolumny chosen_user_id
+    $offer->chosen_user_id = $userId;
+    $offer->save();
+
+    return back()->with('success', 'Pomyślnie wybrano wykonawcę zlecenia.');
+>>>>>>> Stashed changes
 }
 
 public function cancelReport($id)
@@ -278,5 +328,133 @@ public function banUser($userId)
 }}
 
 
+<<<<<<< Updated upstream
 
 
+=======
+public function softDeleteOffer($id)
+{
+    $offer = Oferty::find($id);
+
+    if (!$offer) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie została znaleziona.');
+    }
+
+    $offer->status = 'deleted';
+    $offer->save();
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
+}
+
+    public function statystyki(Request $request)
+
+{
+    $query = User::withCount('oferta');
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('id', $search)
+              ->orWhere('name', 'like', "%{$search}%");
+        });
+    }
+
+
+    $users = $query->get();
+
+    return view('profile.statystyki', compact('users'));
+}
+public function closeRequest($id)
+{
+    $report = Report::find($id);
+
+  
+    if (!$report) {
+        return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+    }
+
+    $report->delete();
+
+
+    return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
+}
+public function createRating($offerId)
+    {
+        $oferta = Oferty::with('rating')->findOrFail($offerId);
+
+        // 1) Sprawdzenie: czy zalogowany to właściciel oferty?
+        if ($oferta->user_id !== Auth::id()) {
+            abort(403, 'Nie masz uprawnień do oceniania tej oferty.');
+        }
+
+        // 2) Sprawdzenie: czy w chosen_user_id jest faktycznie ID wykonawcy?
+        if (! $oferta->chosen_user_id) {
+            abort(400, 'Nie możesz wystawić oceny, bo nie wybrałeś jeszcze wykonawcy.');
+        }
+
+        // 3) Sprawdzenie: czy ocena już nie istnieje
+        if ($oferta->rating) {
+            return redirect()->back()->with('error', 'Ta oferta została już oceniona.');
+        }
+
+        // Jeżeli wszystko OK, pokazujemy widok z formularzem:
+        return view('ratings.create', compact('oferta'));
+    }
+
+    /**
+     * Zapisz w bazie nową ocenę dla danej oferty.
+     * (analogicznie do RatingController@store)
+     */
+    public function storeRating(Request $request, $offerId)
+    {
+        $oferta = Oferty::with('rating')->findOrFail($offerId);
+
+        // 1) Autoryzacja: czy to właściciel oferty?
+        if ($oferta->user_id !== Auth::id()) {
+            abort(403, 'Nie masz uprawnień do tej akcji.');
+        }
+
+        // 2) Czy w chosen_user_id jest ID wykonawcy?
+        if (! $oferta->chosen_user_id) {
+            abort(400, 'Nie możesz wystawić oceny, bo nie wybrałeś jeszcze wykonawcy.');
+        }
+
+        // 3) Czy ocena już istnieje?
+        if ($oferta->rating) {
+            return redirect()->back()->with('error', 'Ocena już istnieje.');
+        }
+
+        // 4) Walidacja pól
+        $data = $request->validate([
+            'stars'   => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:255',
+        ]);
+
+        // 5) Tworzymy nowy rekord w tabeli ratings
+        Rating::create([
+            'offer_id'             => $oferta->id,
+            'rating_from_user_id'  => Auth::id(),
+            'rating_to_user_id'    => $oferta->chosen_user_id,
+            'stars'                => $data['stars'],
+            'comment'              => $data['comment'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('offer.show', $oferta->id)
+            ->with('success', 'Ocena została dodana.');
+    }
+    public function myRatings()
+    {
+        $userId = auth()->id();
+
+        // Pobieramy oceny, które zostały wystawione temu użytkownikowi
+        $ratings = Rating::where('rating_to_user_id', $userId)
+                        ->with('offer', 'ratingFromUser') // jeśli masz relacje zdefiniowane
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+        return view('profile.ratings', compact('ratings'));
+    }
+    
+}
+>>>>>>> Stashed changes
