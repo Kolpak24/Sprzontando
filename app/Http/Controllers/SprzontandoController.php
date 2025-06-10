@@ -107,9 +107,17 @@ class SprzontandoController extends Controller
     }
 
     public function myworks()
-    {
-        return view('profile.myworks', ['user' => Auth::user()]);
-    }
+{
+    $user = Auth::user();
+
+    // Oferty, do których się zgłosił
+    $appliedOffers = Oferty::whereJsonContains('applicants', $user->id)->get();
+
+    // Oferty, w których został wybrany
+    $selectedOffers = Oferty::where('chosen_user_id', $user->id)->get();
+
+    return view('profile.myworks', compact('appliedOffers', 'selectedOffers'));
+}
 
     public function addofert()
     {
@@ -386,6 +394,8 @@ public function closeRequest($id)
 
     return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
 }
+
+
 }
 
 

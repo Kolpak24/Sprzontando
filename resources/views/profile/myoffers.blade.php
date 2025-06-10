@@ -15,6 +15,7 @@
 
     </div>
     <div class="container-fluid">
+        <h2>Tutaj bedzie wyświetlana historia twoich ofert.</h2>
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>

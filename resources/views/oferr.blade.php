@@ -48,7 +48,7 @@
                     Możesz też wstawić formularz, mapę lub cokolwiek innego.
                 </p>
                 <hr>
-                <p>Zgłosił: {{ $offer->user->name }}</p>
+                <p>Wystawił ogłoszenie: {{ $offer->user->name }}</p>
 
                 @auth
                     @php
