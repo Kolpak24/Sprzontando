@@ -80,3 +80,5 @@ Route::get('/offers/{offer}/rating/create', [SprzontandoController::class, 'crea
 Route::post('/offers/{offer}/rating', [SprzontandoController::class, 'storeRating'])
     ->name('ratings.store')
     ->middleware('auth');  // zabezpieczenie dla zalogowanych
+
+Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');

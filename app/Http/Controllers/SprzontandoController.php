@@ -9,6 +9,7 @@ use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Rating;
+use Illuminate\Support\Facades\DB;
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -427,6 +428,19 @@ public function destroy($id)
 
         return redirect()->back()->with('success', 'Ocena została pomyślnie dodana.');
     }
+   
+    public function ranking()
+    {
+        $users = User::with(['ratings'])
+            ->select('users.id', 'users.name', DB::raw('COALESCE(AVG(ratings.stars), 0) as avg_rating'))
+            ->leftJoin('ratings', 'users.id', '=', 'ratings.rating_to_user_id')
+            ->groupBy('users.id', 'users.name')
+            ->orderByDesc('avg_rating')
+            ->get();
+
+        return view('profile.ranking', compact('users'));
+    }
+
 
 }
 

@@ -37,7 +37,7 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
-@yield('filtry')
+                    @yield('filtry')
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -67,6 +67,9 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         {{ __('Opcje') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('ranking') }}">
+                                        {{ __('Ranking Wykonawców') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('profile.userpanel') }}">
                                         {{ __('Panel') }}

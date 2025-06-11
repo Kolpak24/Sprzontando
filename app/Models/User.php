@@ -55,7 +55,11 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
 
     public function oferta()
-{
-    return $this->hasMany(Oferty::class);
-}
+    {
+        return $this->hasMany(Oferty::class);
+    }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'rating_to_user_id');
+    }
 }
