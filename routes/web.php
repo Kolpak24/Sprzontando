@@ -73,6 +73,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
 
+
+use App\Http\Controllers\RatingController;
+
+
 // Wyświetlenie formularza oceny dla oferty (GET)
 Route::get('/offers/{offer}/rating/create', [SprzontandoController::class, 'createRating'])
     ->name('ratings.create')
@@ -82,3 +86,6 @@ Route::get('/offers/{offer}/rating/create', [SprzontandoController::class, 'crea
 Route::post('/offers/{offer}/rating', [SprzontandoController::class, 'storeRating'])
     ->name('ratings.store')
     ->middleware('auth');  // zabezpieczenie dla zalogowanych
+
+Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');
+

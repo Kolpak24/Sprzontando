@@ -10,7 +10,9 @@ use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Rating;
+
 use Illuminate\Support\Carbon;
+
 class SprzontandoController extends Controller
 {
     public function edit()
@@ -364,6 +366,85 @@ public function destroy($id)
     return redirect()->route('adminpanel')->with('success', 'Oferta została oznaczona jako usunięta.');
     }
 
+    public function statystyki(Request $request)
+
+    {
+        $query = User::withCount('oferta');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+
+        $users = $query->get();
+
+        return view('profile.statystyki', compact('users'));
+    }
+    public function closeRequest($id)
+    {
+        $report = Report::find($id);
+
+    
+        if (!$report) {
+            return redirect()->route('adminpanel')->with('error', 'Oferta nie znaleziona.');
+        }
+
+        $report->delete();
+
+
+        return redirect()->route('adminpanel')->with('success', 'Oferta została usunięta.');
+    }
+    public function createRating(Oferty $offer)
+    {
+        return view('ratings.create', compact('offer'));
+    }
+
+    public function storeRating(Request $request)
+    {
+        \Log::info('Request data:', $request->all());
+
+        $validated = $request->validate([
+            'offer_id'             => 'required|exists:oferty,id',
+            'rating_from_user_id'  => 'required|exists:users,id',
+            'rating_to_user_id'    => 'required|exists:users,id',
+            'stars'                => 'required|integer|min:1|max:5',
+            'comment'              => 'nullable|string|max:255',
+        ]);
+
+        \Log::info('Validated data:', $validated);
+
+        $offer = Oferty::findOrFail($validated['offer_id']);
+
+        if ($offer->user_id !== (int) $validated['rating_from_user_id']) {
+            return redirect()->back()->withErrors('Nie możesz ocenić tej oferty – nie jesteś jej właścicielem.');
+        }
+
+        if (Rating::where('offer_id', $offer->id)->exists()) {
+            return redirect()->back()->withErrors('Ta oferta została już oceniona.');
+        }
+
+        Rating::create($validated);
+
+        return redirect()->back()->with('success', 'Ocena została pomyślnie dodana.');
+    }
+   
+    public function ranking()
+    {
+        $users = User::with(['ratings'])
+            ->select('users.id', 'users.name', DB::raw('COALESCE(AVG(ratings.stars), 0) as avg_rating'))
+            ->leftJoin('ratings', 'users.id', '=', 'ratings.rating_to_user_id')
+            ->groupBy('users.id', 'users.name')
+            ->orderByDesc('avg_rating')
+            ->get();
+
+        return view('profile.ranking', compact('users'));
+
+    }
+
 public function statystyki(Request $request)
 {
     if (Auth::user()->role !== 'admin') {
@@ -389,6 +470,7 @@ public function statystyki(Request $request)
     } elseif ($sort === 'desc') {
         $query->orderBy('received_ratings_avg_stars', 'desc');
     }
+
 
     $users = $query->get();
 

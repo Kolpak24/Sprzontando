@@ -37,7 +37,7 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
-@yield('filtry')
+                    @yield('filtry')
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
