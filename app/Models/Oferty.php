@@ -24,8 +24,11 @@ class Oferty extends Model
         'cena',
         'rodzaj',
         'obraz',
+
         'chosen_user_id',  // dopiszemy to, żeby móc masowo przypisywać
         'applicants', 
+
+
     ];
 
     public function user()

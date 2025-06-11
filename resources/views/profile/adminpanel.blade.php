@@ -10,9 +10,12 @@
     <div class="mb-4">
         <nav class="nav nav-pills">
             <a class="nav-link" href="{{ route('adminpanel' ) }}">Zgłoszone oferty</a>
-            <a class="nav-link" href="{{ route('statystyki') }}">Statystyki</a>
+
+            <a class="nav-link" href="{{ route('adminpanel') }}">Oceny</a>
+            <a class="nav-link" href="{{ route('adminpanel') }}">Statystyki</a>
         </nav> 
 </div>
+
 
 
 <div class="container">
@@ -22,6 +25,7 @@
     </div>
 
     <h2>Tu będą wyświetlane zgłoszone oferty.</h2>
+
 
 
 <table class="table table-bordered table-striped table-hover w-100">
@@ -52,7 +56,9 @@
                 <form action="{{ route('admin.ban', $report->zglaszany_id) }}" method="POST" style="display:inline-block;">
                     @csrf
                     <input type="hidden" name="report_id" value="{{ $report->id }}">
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('Zbanować użytkownika?')">Zbanuj</button>
+
+                    <button class="btn btn-danger btn-sm" onclick="return confirm('Zbanować użytkownika i usunąć jego ogłoszenia?')">Zbanuj</button>
+
                 </form>
 
                 <!-- Przycisk Anuluj zgłoszenie -->
@@ -60,6 +66,7 @@
                     @csrf
                     <button class="btn btn-secondary btn-sm" onclick="return confirm('Na pewno usunąć zgłoszenie?')">Cofnij zgloszenie</button>
                 </form>
+
 
                 <form action="{{ route('admin.softDeleteOffer', $report->oferta_id) }}" method="POST" style="display:inline-block; margin-left: 5px;">
                     @csrf
@@ -72,6 +79,7 @@
                     <button type="submit" class="btn btn-success btn-sm">Zamknij zgłoszenie</button>
                 </form>
             </td>
+
         </tr>
 
     @endforeach
@@ -81,4 +89,3 @@
     <p>Brak zgłoszeń</p>
 @endif
 @endsection
-

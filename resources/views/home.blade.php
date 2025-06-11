@@ -2,6 +2,46 @@
 
 @section('content')
 
+@if(isset($oferty))
+<table class="table table-bordered table-striped table-hover w-100">
+    <tr>
+        <th>Obraz</th>
+        <th>Tytul</th>
+        <th>Rodzaj</th>
+        <th>Lokalizacja</th>
+        <th>Wynagrodzenie</th>
+        <th>Opis</th>
+        <th>Akcje</th>
+    </tr>
+    @foreach ($oferty as $offer)
+
+          
+        <tr>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->obraz}}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->tytul }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->rodzaj }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">{{ $offer->lokalizacja }}</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">Zapłata: {{ $offer->cena}} zł</td>
+            <td onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;"><p>{{ Str::limit($offer->opis, 100, '...') }}</p></td>
+           
+            <td>
+                <!-- Przycisk do otwierania modala -->
+                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#reportModal{{ $offer->id }}">
+                    Report
+                </button>
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+                    Zgłoś się!
+                </button>
+
+               
+
+                                <button class="btn btn-sm btn-success" onclick="window.location='{{ route('oferr', $offer->id) }}'" style="cursor:pointer;">
+
+                    Zgłoś się!
+                </button>
+
+               
+
 <style>
 .fixed-img {
   width: 100%;        /* szerokość karty */
@@ -31,6 +71,7 @@
                     <p class="card-text"><strong>Cena:</strong> {{ $offer->cena }} zł</p>
                     <p class="card-text">{{ Str::limit($offer->opis, 100, '...') }}</p>
                 </div>
+
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <button class="btn btn-success btn-sm" onclick="event.stopPropagation(); window.location='{{ route('oferr', $offer->id) }}'">Zgłoś się!</button>
 
@@ -81,6 +122,7 @@
         @endforeach
     </div>
 </div>
+
 @else
     <p class="text-center">Brak ofert.</p>
 @endif

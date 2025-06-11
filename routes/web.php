@@ -40,6 +40,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/myoffers/{id}', [SprzontandoController::class, 'destroy'])->name('profile.deleteoffers');
     Route::get('/offer/{id}', [SprzontandoController::class, 'show'])->name('oferr');
 
+
     Route::get('/statystyki', [SprzontandoController::class, 'statystyki'])->name('statystyki');
 
     Route::post('/offers/{id}/apply', [SprzontandoController::class, 'apply'])->name('offer.apply');
@@ -58,11 +59,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/user/{user_id}', [SprzontandoController::class, 'showUser'])->name('infoUser');
     
   
+
 });
 
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
+
 
 Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');
 
@@ -92,4 +95,14 @@ Route::post('/offers/{offer}/rating', [SprzontandoController::class, 'storeRatin
     ->middleware('auth');  // zabezpieczenie dla zalogowanych
 
 Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');
+
+
+
+
+Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
+Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
+
+
+//Route::get('/home', [SprzontandoController::class, 'index']);
+Route::get('/home', [SprzontandoController::class, 'filtry']);
 
