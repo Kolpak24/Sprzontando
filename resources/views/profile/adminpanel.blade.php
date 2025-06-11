@@ -15,9 +15,6 @@
 </div>
 
 
-
-
-
 <div class="container">
     <div class="alert alert-success">
         <h4 class="mb-0">Cześć {{ Auth::user()->name }}! 👋</h4>

@@ -50,13 +50,17 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/admin/usun-oferte/{id}', [SprzontandoController::class, 'softDeleteOffer'])->name('admin.softDeleteOffer');
 
     Route::delete('/admin/close-request/{id}', [SprzontandoController::class, 'closeRequest'])->name('admin.closeRequest');
+
+    Route::patch('/oferty/{id}/zakoncz', [SprzontandoController::class, 'zakoncz'])->name('oferta.zakoncz');
+
+    Route::post('/admin/ban-temp', [SprzontandoController::class, 'tempBanUser'])->name('tempBanUser');
 });
+
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
 
-
-
+Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');
 
 //Route::get('/home', [SprzontandoController::class, 'index']);
 Route::get('/home', [SprzontandoController::class, 'filtry']);
@@ -68,3 +72,13 @@ Route::middleware('auth')->group(function () {
     // Trasa do wyboru wykonawcy
     Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
+
+// Wyświetlenie formularza oceny dla oferty (GET)
+Route::get('/offers/{offer}/rating/create', [SprzontandoController::class, 'createRating'])
+    ->name('ratings.create')
+    ->middleware('auth');  // opcjonalnie, jeśli chcesz zabezpieczyć dostęp
+
+// Zapis oceny (POST)
+Route::post('/offers/{offer}/rating', [SprzontandoController::class, 'storeRating'])
+    ->name('ratings.store')
+    ->middleware('auth');  // zabezpieczenie dla zalogowanych

@@ -7,6 +7,7 @@
     
     <div class="mb-4">
         <nav class="nav nav-pills">
+
             <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
             <a class="nav-link" href="{{ route('profile.addofert') }}">Dodaj ofertę</a>
 
@@ -15,7 +16,7 @@
 
     </div>
     <div class="container-fluid">
-        <h2>Tutaj bedzie wyświetlana historia twoich ofert.</h2>
+        <h2>Tutaj będą wyświetlane twoje aktywne oferty.</h2>
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>
@@ -104,6 +105,12 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                </form>
+
+                <form action="{{ route('oferta.zakoncz', $moffer->id) }}" method="POST" style="display:inline-block; margin-left: 5px;" onsubmit="return confirm('Czy na pewno to koniec?')">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-success btn-sm">Zakończ zlecenie</button>
                 </form>
             </td> 
         </tr>
