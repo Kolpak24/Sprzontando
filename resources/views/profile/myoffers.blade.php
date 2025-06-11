@@ -7,6 +7,7 @@
     
     <div class="mb-4">
         <nav class="nav nav-pills">
+
             <a class="nav-link active" href="{{ route('profile.userpanel') }}">Panel główny</a>
             <a class="nav-link" href="{{ route('profile.addofert') }}">Dodaj ofertę</a>
 
@@ -15,9 +16,12 @@
 
     </div>
     <div class="container-fluid">
+        <h2>Tutaj będą wyświetlane twoje aktywne oferty.</h2>
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>
+                <th>Obraz</th>
+                <th>Tytul</th>
                 <th>Rodzaj</th>
                 <th>Lokalizacja</th>
                 <th>Cena</th>
@@ -27,13 +31,21 @@
              @foreach ($myoffer as $moffer)
             
         <tr>
-            <td>{{ $moffer->rodzaj }}</td>
-            <td>{{ $moffer->lokalizacja }}</td>
-            <td>Cena: {{ $moffer->cena }} zł</td>
-            <td>{{ $moffer->opis }}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">
+                @if($moffer->obraz)
+                    <img src="{{ asset('storage/' . $moffer->obraz) }}" alt="Zdjęcie oferty" style="max-width: 100px; max-height: 70px; object-fit: cover;">
+                @else
+                    <img src="https://via.placeholder.com/100x70?text=Brak+zdjęcia" alt="Brak zdjęcia">
+            @endif
+            </td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{$moffer->tytul}}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ $moffer->rodzaj }}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ $moffer->lokalizacja }}</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">Cena: {{ $moffer->cena }} zł</td>
+            <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
             <td>
                 <!-- Przycisk do otwierania modala -->
-                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
+                <button class="btn  btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">
                     Edytuj
                 </button>
                 <div class="modal fade" id="editModal{{ $moffer->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $moffer->id }}" aria-hidden="true">
@@ -89,11 +101,17 @@
                 </div>
 
                  
-              <form action="{{ route('profile.deleteoffers', $moffer->id) }}" method="get" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
-             @csrf
-                @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-</form>
+                <form action="{{ route('profile.deleteoffers', $moffer->id) }}" method="get" style="display:inline-block; margin-left: 5px;" onsubmit="return confirm('Na pewno chcesz usunąć tę ofertę?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                </form>
+
+                <form action="{{ route('oferta.zakoncz', $moffer->id) }}" method="POST" style="display:inline-block; margin-left: 5px;" onsubmit="return confirm('Czy na pewno to koniec?')">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-success btn-sm">Zakończ zlecenie</button>
+                </form>
             </td> 
         </tr>
                 @endforeach

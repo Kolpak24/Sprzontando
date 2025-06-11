@@ -37,7 +37,7 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
-@yield('filtry')
+                    @yield('filtry')
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -56,7 +56,7 @@
                         @else
                             @if(Auth::user()->role === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('adminpanel') }}">{{ __('Admin Panel') }}</a>
+                                   <a class="nav-link text-center text-nowrap w-100" href="{{ route('adminpanel') }}"> {{ __('Admin Panel') }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
@@ -67,6 +67,9 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         {{ __('Opcje') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('ranking') }}">
+                                        {{ __('Ranking Wykonawców') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('profile.userpanel') }}">
                                         {{ __('Panel') }}

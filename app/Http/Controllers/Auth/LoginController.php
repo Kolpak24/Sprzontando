@@ -4,37 +4,38 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request; // ← TO JEST KLUCZOWE!
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+  protected function authenticated(Request $request, $user)
+{
+    // Jeśli rola to "banned", ale czas bana minął – cofnij bana
+    if ($user->role === 'banned' && $user->banned_until && now()->greaterThanOrEqualTo($user->banned_until)) {
+        $user->role = 'user';
+        $user->banned_until = null;
+        $user->save();
+    }
+
+    // Jeśli nadal zbanowany – wyloguj i pokaż błąd
+    if ($user->role === 'banned' && $user->banned_until && now()->lessThan($user->banned_until)) {
+        Auth::logout();
+        return redirect('/login')->withErrors([
+            'email' => 'Twoje konto jest zbanowane do ' . $user->banned_until->format('d.m.Y H:i') . '.',
+        ]);
+    }
+
+    return redirect()->intended($this->redirectTo);
+}
 }
