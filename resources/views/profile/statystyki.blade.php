@@ -66,7 +66,11 @@
                 <tr>
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
-                    <td>{{ $user->role }}</td>
+                    <td>{{ $user->role }}
+                        @if($user->role === 'banned' && $user->banned_until)
+                            <br><small class="text-danger">Do: {{ $user->banned_until->format('Y-m-d H:i') }}</small>
+                        @endif
+                    </td>
                     <td>{{ $user->created_at }}</td>
                     <td>{{ $user->completed_offers_count }}</td>
                     <td>
@@ -77,12 +81,20 @@
                         @endif
                     </td>
                     <td>
-                        <form action="{{ route('tempBanUser') }}" method="POST" class="d-inline-flex align-items-center gap-2">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <input type="number" name="days" min="1" max="30" class="form-control form-control-sm" placeholder="dni" style="width: 70px;" required>
-                            <button type="submit" class="btn btn-warning btn-sm">Temp-ban</button>
-                        </form>
+                        @if ($user->role === 'banned')
+                            <form action="{{ route('unbanUser') }}" method="POST" class="d-inline-block mb-1">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <button type="submit" class="btn btn-success btn-sm">Odbanuj</button>
+                            </form>
+                        @else
+                            <form action="{{ route('tempBanUser') }}" method="POST" class="d-inline-flex align-items-center gap-2">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <input type="number" name="days" min="1" max="30" class="form-control form-control-sm" placeholder="dni" style="width: 70px;" required>
+                                <button type="submit" class="btn btn-warning btn-sm">Temp-ban</button>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @empty

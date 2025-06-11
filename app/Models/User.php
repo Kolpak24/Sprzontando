@@ -26,6 +26,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'id',
     ];
 
+    protected $dates = ['banned_until'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,12 +44,13 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      * @return array<string, string>
      */
     protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+{
+    return [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'banned_until' => 'datetime',
+    ];
+}
 
     public function sendEmailVerificationNotification()
     {
@@ -75,5 +78,9 @@ public function ratings()
         return $this->hasMany(Rating::class, 'rating_to_user_id');
     }
 
+public function isCurrentlyBanned(): bool
+{
+    return $this->role === 'banned' && $this->banned_until && now()->lessThan($this->banned_until);
+}
 
 }

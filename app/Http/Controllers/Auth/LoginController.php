@@ -19,10 +19,23 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-  protected function authenticated(Request $request, $user){
-      if ($user->role === 'banned') {Auth::logout();
-          return redirect('/login')->withErrors(['email' => 'Twoje konto zostało zbanowane.']);}
-
-        return redirect()->intended($this->redirectTo);
+  protected function authenticated(Request $request, $user)
+{
+    // Jeśli rola to "banned", ale czas bana minął – cofnij bana
+    if ($user->role === 'banned' && $user->banned_until && now()->greaterThanOrEqualTo($user->banned_until)) {
+        $user->role = 'user';
+        $user->banned_until = null;
+        $user->save();
     }
+
+    // Jeśli nadal zbanowany – wyloguj i pokaż błąd
+    if ($user->role === 'banned' && $user->banned_until && now()->lessThan($user->banned_until)) {
+        Auth::logout();
+        return redirect('/login')->withErrors([
+            'email' => 'Twoje konto jest zbanowane do ' . $user->banned_until->format('d.m.Y H:i') . '.',
+        ]);
+    }
+
+    return redirect()->intended($this->redirectTo);
+}
 }

@@ -54,6 +54,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::patch('/oferty/{id}/zakoncz', [SprzontandoController::class, 'zakoncz'])->name('oferta.zakoncz');
 
     Route::post('/admin/ban-temp', [SprzontandoController::class, 'tempBanUser'])->name('tempBanUser');
+    Route::post('/admin/unban-user', [SprzontandoController::class, 'unbanUser'])->name('unbanUser');
 });
 
 

@@ -52,7 +52,7 @@
                 <form action="{{ route('admin.ban', $report->zglaszany_id) }}" method="POST" style="display:inline-block;">
                     @csrf
                     <input type="hidden" name="report_id" value="{{ $report->id }}">
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('Zbanować użytkownika i usunąć jego ogłoszenia?')">Zbanuj</button>
+                    <button class="btn btn-danger btn-sm" onclick="return confirm('Zbanować użytkownika?')">Zbanuj</button>
                 </form>
 
                 <!-- Przycisk Anuluj zgłoszenie -->

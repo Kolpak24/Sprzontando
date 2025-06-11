@@ -14,9 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 
-    ->withMiddleware(function ($middleware) {
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->web([
+            // Tu dodajesz swoje middleware dla web
+            \App\Http\Middleware\CheckIfBanned::class,
+        ]);
     })
-
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })

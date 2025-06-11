@@ -488,7 +488,16 @@ public function ranking()
         return view('profile.ranking', compact('users'));
     }
 
+    public function unbanUser(Request $request)
+{
+    $user = User::findOrFail($request->user_id);
 
+    $user->role = 'user';
+    $user->banned_until = null;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Użytkownik został odbanowany.');
+}
 }
 
 
