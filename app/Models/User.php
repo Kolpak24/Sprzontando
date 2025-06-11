@@ -76,12 +76,4 @@ public function ratings()
     }
 
 
-    {
-        return $this->hasMany(Oferty::class);
-    }
-    public function ratings()
-    {
-        return $this->hasMany(Rating::class, 'rating_to_user_id');
-    }
-
 }
