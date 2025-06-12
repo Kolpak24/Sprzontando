@@ -35,7 +35,5 @@ class LoginController extends Controller
             'email' => 'Twoje konto jest zbanowane do ' . $user->banned_until->format('d.m.Y H:i') . '.',
         ]);
     }
-
-    return redirect()->intended($this->redirectTo);
 }
 }

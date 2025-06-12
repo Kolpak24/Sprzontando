@@ -71,12 +71,14 @@ public function completedOffers()
 {
     return $this->hasMany(Oferty::class, 'chosen_user_id')
                 ->where('status', 'zakonczona');
+                
 }
 
 public function ratings()
     {
         return $this->hasMany(Rating::class, 'rating_to_user_id');
     }
+
 
 public function isCurrentlyBanned(): bool
 {

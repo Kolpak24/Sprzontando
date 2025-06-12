@@ -68,6 +68,11 @@
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         {{ __('Opcje') }}
                                     </a>
+
+                                                                        <a class="dropdown-item" href="{{ route('ranking') }}">
+                                        {{ __('Ranking Wykonawców') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('profile.userpanel') }}">
                                         {{ __('Panel') }}
                                     </a>
@@ -91,7 +96,7 @@
             @yield('zawartosc')
         </main>
     </div>
+
     @stack('scripts')
 </body>
 </html>
-

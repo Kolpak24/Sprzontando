@@ -36,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+
          Schema::table('oferty', function (Blueprint $table) {
             $table->dropColumn('applicants');
             $table->dropForeign(['chosen_user_id']);
@@ -44,4 +45,5 @@ return new class extends Migration
         });
         
     }
+    
 };

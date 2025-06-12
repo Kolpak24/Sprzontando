@@ -288,7 +288,6 @@ public function destroy($id)
 
     return view('home', compact('oferty'));
 }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
@@ -297,13 +296,12 @@ public function destroy($id)
     {
         // Dokładamy relację 'rating' do wczytania razem z 'user'
         $offer = Oferty::with(['user', 'rating'])->findOrFail($id);
-
+        $user = auth()->user()->load('completedOffers');
         $applicantIds = $offer->applicants ?? [];
         $applicants   = User::whereIn('id', $applicantIds)->get();
 
         return view('oferr', compact('offer', 'applicants'));
     }
-
 
     public function chooseApplicant($offerId, $userId)
     {
@@ -498,6 +496,14 @@ public function ranking()
 
     return redirect()->back()->with('success', 'Użytkownik został odbanowany.');
 }
+public function showUser($user_id)
+{
+    $user = User::findOrFail($user_id);
+    return view('profile.userinfo', compact('user'));
+}
+public function ratingFromUser()
+{
+    return $this->belongsTo(User::class, 'rating_from_user_id');
 }
 
-
+}

@@ -20,6 +20,7 @@
     @if(isset($myoffer))
         <table class="table table-bordered table-striped table-hover w-100">
             <tr>
+
                 <th>Obraz</th>
                 <th>Tytul</th>
                 <th>Rodzaj</th>
