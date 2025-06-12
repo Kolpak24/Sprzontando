@@ -23,7 +23,6 @@
 
                 <th>Obraz</th>
                 <th>Tytul</th>
-
                 <th>Rodzaj</th>
                 <th>Lokalizacja</th>
                 <th>Cena</th>
@@ -33,7 +32,6 @@
              @foreach ($myoffer as $moffer)
             
         <tr>
-
             <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">
                 @if($moffer->obraz)
                     <img src="{{ asset('storage/' . $moffer->obraz) }}" alt="Zdjęcie oferty" style="max-width: 100px; max-height: 70px; object-fit: cover;">
@@ -46,7 +44,6 @@
             <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ $moffer->lokalizacja }}</td>
             <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">Cena: {{ $moffer->cena }} zł</td>
             <td onclick="window.location='{{ route('oferr', $moffer->id) }}'" style="cursor:pointer;">{{ Str::limit($moffer->opis, 100, '...') }}</p></td>
-
             <td>
                 <!-- Przycisk do otwierania modala -->
                 <button class="btn  btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $moffer->id }}">

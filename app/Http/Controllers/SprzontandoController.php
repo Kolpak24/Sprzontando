@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Oferty;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Rating;
+
+use Illuminate\Support\Carbon;
 
 class SprzontandoController extends Controller
 {
@@ -285,8 +288,6 @@ public function destroy($id)
 
     return view('home', compact('oferty'));
 }
-
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id'); // jeśli kolumna nazywa się inaczej, zmień drugi parametr
@@ -301,30 +302,6 @@ public function destroy($id)
 
         return view('oferr', compact('offer', 'applicants'));
     }
-
-
-public function cancelReport($id)
-{
-    $report = Report::findOrFail($id);
-    $report->delete();
-
-    return redirect()->back()->with('success', 'Zgłoszenie zostało cofnięte.');
-}
-
-public function banUser($userId)
-{
-    // Zbanuj użytkownika
-    $user = User::findOrFail($userId);
-    $user->role = 'banned';
-    $user->save();
-
-    // Usuń jego ogłoszenia
-    Oferty::where('user_id', $userId)->delete();
-
-    return redirect()->back()->with('success', 'Użytkownik został zbanowany, a jego ogłoszenia usunięte.');
-}
-
-
 
     public function chooseApplicant($offerId, $userId)
     {
@@ -530,6 +507,3 @@ public function ratingFromUser()
 }
 
 }
-
-
-

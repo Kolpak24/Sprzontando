@@ -20,12 +20,10 @@ return new class extends Migration
             $table->decimal('cena', 10, 2);
             $table->timestamps();
             $table->string('rodzaj')->nullable();
-
             $table->string('status')->default('active');
             $table->string('obraz')->nullable();
             $table->json('applicants')->nullable();
             $table->unsignedBigInteger('chosen_user_id')->nullable(); // bez ->after()
-
 
             $table->foreign('chosen_user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

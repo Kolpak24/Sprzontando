@@ -1,6 +1,5 @@
 @extends('layouts.oferta')
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,15 +35,18 @@
         color: #f4c150;
     }
 </style>
+@endpush
 
 @section('zawartosc')
 <div class="container py-5">
-    <div class="row justify-content-center align-items-stretch"> {{-- flexbox z align-items-stretch --}}
+    <div class="row justify-content-center align-items-stretch">
 
         {{-- Lewa kolumna: oferta --}}
         <div class="col-md-8 d-flex flex-column">
 
+
             {{-- Karta ze zdjęciem i tytułem --}}
+
 
             <div class="card shadow-lg rounded mb-4">
                 <div class="card-body">
@@ -57,18 +59,16 @@
                 @endif
             </div>
 
-            {{-- Lokalizacja i rodzaj --}}
             <div class="card shadow-lg rounded p-3 mb-4">
                 <p class="text-muted mb-0">
+
                     <i class="bi bi-geo-alt"></i> {{ $offer->lokalizacja }} |
 
                     <i class="bi bi-tag"></i> {{ $offer->rodzaj }}
                 </p>
             </div>
 
-
             {{-- Cena --}}
-
             <div class="card shadow-lg rounded p-3 mb-4">
                 <h4 class="text-success mb-0">Zapłata: {{ $offer->cena }} zł</h4>
             </div>
@@ -114,10 +114,10 @@
                     @if($applicants->isEmpty())
                         <p>Brak zgłoszeń do tej oferty.</p>
                     @else
-                   
                         <div class="d-flex flex-wrap gap-2">
                             @foreach($applicants as $applicant)
                             <a href="{{ route('infoUser', ['user_id' => $applicant->id]) }}" class="text-decoration-none">
+
                                 <div class="card p-2" style="width: 150px;">
                                     <div class="card-body p-2 text-center">
                                         <strong>{{ $applicant->name }}</strong>
@@ -135,6 +135,7 @@
                             @endforeach
                         </div>
                     
+
                     @endif
 
                     {{-- Sekcja oceny wykonawcy --}}

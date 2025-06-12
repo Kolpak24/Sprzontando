@@ -79,10 +79,10 @@ public function ratings()
         return $this->hasMany(Rating::class, 'rating_to_user_id');
     }
 
+
 public function isCurrentlyBanned(): bool
 {
     return $this->role === 'banned' && $this->banned_until && now()->lessThan($this->banned_until);
 }
-
 
 }

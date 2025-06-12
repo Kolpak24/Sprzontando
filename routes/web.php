@@ -56,9 +56,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::post('/admin/ban-temp', [SprzontandoController::class, 'tempBanUser'])->name('tempBanUser');
     Route::post('/admin/unban-user', [SprzontandoController::class, 'unbanUser'])->name('unbanUser');
+
     Route::get('/user/{user_id}', [SprzontandoController::class, 'showUser'])->name('infoUser');
-    
-  
 
 });
 
@@ -75,7 +74,7 @@ Route::get('/home', [SprzontandoController::class, 'filtry']);
 
 Route::middleware('auth')->group(function () {
     // ... inne trasy chronione
-
+  
     // Trasa do wyboru wykonawcy
     Route::post('/offer/{offer}/choose/{user}', [SprzontandoController::class, 'chooseApplicant'])->name('offer.choose');
 });
@@ -95,14 +94,3 @@ Route::post('/offers/{offer}/rating', [SprzontandoController::class, 'storeRatin
     ->middleware('auth');  // zabezpieczenie dla zalogowanych
 
 Route::get('/ranking', [SprzontandoController::class, 'ranking'])->name('ranking')->middleware('auth');
-
-
-
-
-Route::post('/ban-user/{userId}', [SprzontandoController::class, 'banUser'])->name('admin.ban');
-Route::post('/admin/cancel-report/{id}', [SprzontandoController::class, 'cancelReport'])->name('admin.cancelReport');
-
-
-//Route::get('/home', [SprzontandoController::class, 'index']);
-Route::get('/home', [SprzontandoController::class, 'filtry']);
-

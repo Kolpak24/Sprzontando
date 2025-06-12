@@ -19,7 +19,6 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-
   protected function authenticated(Request $request, $user)
 {
     // Jeśli rola to "banned", ale czas bana minął – cofnij bana
@@ -36,6 +35,5 @@ class LoginController extends Controller
             'email' => 'Twoje konto jest zbanowane do ' . $user->banned_until->format('d.m.Y H:i') . '.',
         ]);
     }
-
 }
 }
