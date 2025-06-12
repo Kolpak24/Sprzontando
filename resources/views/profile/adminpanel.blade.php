@@ -10,8 +10,8 @@
     <div class="mb-4">
         <nav class="nav nav-pills">
             <a class="nav-link" href="{{ route('adminpanel' ) }}">Zgłoszone oferty</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Oceny</a>
-            <a class="nav-link" href="{{ route('adminpanel') }}">Statystyki</a>
+            {{-- <a class="nav-link" href="{{ route('showUser') }}">Oceny</a> --}}
+            <a class="nav-link" href="{{ route('statystyki') }}">Statystyki</a>
         </nav> 
 </div>
 
