@@ -1,1 +1,0 @@
-ssh -i sprzontando3.pem ubuntu@16.171.217.40
